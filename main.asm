@@ -2938,7 +2938,7 @@ SpecialGiveShuckle: ; 7305
 
 ; Caught data.
 	ld b, 0
-	callba Function4dba3
+	callba SetPkmnCaughtData
 
 ; Holding a Berry.
 	ld bc, PartyMon2 - PartyMon1
@@ -8227,6 +8227,359 @@ endr
 	ret
 ; da6d
 
+
+;;;;;;;;;;;;;
+
+AddPkmnToParty2: ; Check if to copy wild Pkmn or generate new Pkmn
+	ld de, PartyCount
+	ld a, [MonType]
+	and $f
+	jr z, IfMonType0_
+	ld de, OTPartyCount
+IfMonType0_:
+	ld a, [de]
+	inc a
+	cp PARTY_LENGTH + 1
+	ret nc				; return if Party is full
+
+	ld [de], a
+	ld a, [de]
+	ld [$ffae], a
+	add e
+	ld e, a
+	jr nc, .asm_d8a7_
+	inc d
+.asm_d8a7_
+	ld a, [CurPartySpecies]
+	ld [de], a
+	inc de
+	ld a, $ff
+	ld [de], a
+	ld hl, PartyMonOT
+	ld a, [MonType]
+	and $f
+	jr z, .asm_d8bc_
+	ld hl, OTPartyMonOT
+.asm_d8bc_
+	ld a, [$ffae]
+	dec a
+	call SkipNames
+	ld d, h
+	ld e, l
+	ld hl, PlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ld a, [MonType]
+	and a
+	jr nz, .asm_d8f0_
+	ld a, [CurPartySpecies]
+	ld [wd265], a
+	call GetPokemonName
+	ld hl, PartyMonNicknames
+	ld a, [$ffae]
+	dec a
+	call SkipNames
+	ld d, h
+	ld e, l
+	ld hl, StringBuffer1
+	ld bc, PKMN_NAME_LENGTH
+	call CopyBytes
+
+.asm_d8f0_
+	ld hl, PartyMon1Species
+	ld a, [MonType]
+	and $f
+	jr z, .asm_d8fd_
+	ld hl, OTPartyMon1Species
+.asm_d8fd_
+	ld a, [$ffae]
+	dec a
+	ld bc, PartyMon2 - PartyMon1
+	call AddNTimes
+Functiond906_: ; d906
+	ld e, l
+	ld d, h
+	push hl
+	ld a, [CurPartySpecies]
+	ld [CurSpecies], a
+	call GetBaseData
+	ld a, [BaseDexNo]
+	ld [de], a
+	inc de
+	ld a, [IsInBattle]
+	and a
+	ld a, $0
+	jr z, .asm_d922_
+	ld a, [EnemyMonItem]
+.asm_d922_
+	ld [de], a
+	inc de
+	push de
+	ld h, d
+	ld l, e
+
+NewPkmnWithoutMoves_:
+;	xor a
+;	rept NUM_MOVES + -1
+;	ld [hli], a
+;	endr
+;	ld [hl], a
+;	ld [Buffer1], a
+;	predef FillMoves
+
+	ld a, [CurMove0]
+	ld [hli], a
+	ld a, [CurMove1]
+	ld [hli], a
+	ld a, [CurMove2]
+	ld [hli], a
+	ld a, [CurMove3]
+	ld [hl], a
+
+WildPkmnWithMoves_:
+	pop de
+rept 4
+	inc de
+endr
+	ld a, [PlayerID]
+	ld [de], a
+	inc de
+	ld a, [PlayerID + 1]
+	ld [de], a
+	inc de
+	push de
+	ld a, [CurPartyLevel]
+	ld d, a
+	callab Function50e47
+	pop de
+	ld a, [hMultiplicand]
+	ld [de], a
+	inc de
+	ld a, [$ffb5]
+	ld [de], a
+	inc de
+	ld a, [$ffb6]
+	ld [de], a
+	inc de
+; Set Experience Values of Pkmn
+;	xor a
+	ld a, $ff
+	ld b, $a
+.asm_d97a_
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .asm_d97a_
+	pop hl
+	push hl
+	ld a, [MonType]
+	and $f
+	jr z, .asm_d992_
+	push hl
+	callba GetTrainerDVs
+	pop hl
+	jr .asm_d9b5_
+
+.asm_d992_
+	ld a, [CurPartySpecies]
+	ld [wd265], a
+	dec a
+	push de
+	call CheckCaughtMon
+	ld a, [wd265]
+	dec a
+	call SetSeenAndCaughtMon
+	pop de
+	pop hl
+	push hl
+	ld a, [IsInBattle]
+	and a
+	jr nz, .asm_d9f3_
+; GetRandom Values for DV values
+	;call Random
+	push hl
+	ld a, [HPType]
+	ld c, a
+	ld b, 0
+	;ld bc, a
+	ld hl, HiddenPowerDVs
+	add hl, bc
+	ld a, [hl]
+	ld b, a
+	pop hl
+	
+	;ld b, $ff
+	;call Random
+	ld c, $ff
+
+.asm_d9b5_
+	ld a, b
+	ld [de], a
+	inc de
+	ld a, c
+	ld [de], a
+	inc de
+	push hl
+	push de
+rept 2
+	inc hl
+endr
+	call FillPP
+	pop de
+	pop hl
+rept 4
+	inc de
+endr
+	ld a, $46
+	ld [de], a
+	inc de
+	xor a
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld a, [CurPartyLevel]
+	ld [de], a
+	inc de
+	xor a
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld bc, $000a
+	add hl, bc
+	ld a, $1
+	ld c, a
+	ld b, $0
+	call Functione17b
+	ld a, [$ffb5]
+	ld [de], a
+	inc de
+	ld a, [$ffb6]
+	ld [de], a
+	inc de
+	jr .asm_da29_
+
+.asm_d9f3_
+	ld a, [EnemyMonDVs]
+	ld [de], a
+	inc de
+	ld a, [EnemyMonDVs + 1]
+	ld [de], a
+	inc de
+
+	push hl
+	ld hl, EnemyMonPP
+	ld b, NUM_MOVES
+.asm_da03_
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .asm_da03_
+	pop hl
+
+	ld a, BASE_HAPPINESS
+	ld [de], a
+	inc de
+	xor a
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld a, [CurPartyLevel]
+	ld [de], a
+	inc de
+	ld hl, EnemyMonStatus
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	inc de
+
+.asm_da29_
+	ld a, [IsInBattle]
+	dec a
+	jr nz, .asm_da3b_
+	ld hl, EnemyMonMaxHP
+	ld bc, $000c
+	call CopyBytes
+	pop hl
+	jr .asm_da45_
+
+.asm_da3b_
+	pop hl
+	ld bc, $000a
+	add hl, bc
+	ld b, $0
+	call Functione167
+
+.asm_da45_
+	ld a, [MonType]
+	and $f
+	jr nz, .asm_da6b_
+	ld a, [CurPartySpecies]
+	cp UNOWN
+	jr nz, .asm_da6b_
+	ld hl, PartyMon1DVs
+	ld a, [PartyCount]
+	dec a
+	ld bc, PartyMon2 - PartyMon1
+	call AddNTimes
+	predef GetUnownLetter
+	callab Functionfba18
+
+.asm_da6b_
+	scf
+	ret
+; da6d
+
+
+; Source: http://www.psypokes.com/gsc/dvguide.php
+HiddenPowerDVs:
+	db $ff ;NORMAL
+	db $cc ;FIGHTING
+	db $cd ;FLYING
+	db $ce ;POISON
+	db $cf ;GROUND
+	db $dc ;ROCK
+	db $00 ;BIRD
+	db $dd ;BUG
+	db $de ;GHOST
+	db $df ;STEEL
+	db $00 ;TYPE_10
+	db $00 ;TYPE_11
+	db $00 ;TYPE_12
+	db $00 ;TYPE_13
+	db $00 ;TYPE_14
+	db $00 ;TYPE_15
+	db $00 ;TYPE_16
+	db $00 ;TYPE_17
+	db $00 ;TYPE_18
+	db $00 ;CURSE_T
+	db $ec ;FIRE
+	db $ed ;WATER
+	db $ee ;GRASS
+	db $ef ;ELECTRIC
+	db $fc ;PSYCHIC
+	db $fd ;ICE
+	db $fe ;DRAGON
+	db $ff ;DARK
+
+;;;;;;;;;;;;;
+
+
 FillPP: ; da6d
 	push bc
 	ld b, NUM_MOVES
@@ -9562,7 +9915,7 @@ endr
 	ld [hli], a
 	ld [hl], $e9
 	pop bc
-	callba Function4dba3
+	callba SetPkmnCaughtData
 	jr .asm_e3b2
 
 .asm_e35e
@@ -9604,7 +9957,7 @@ endr
 	callba Function4db49
 
 .asm_e3a6
-	callba Function4db3b
+	callba GiveANickname_YesNo
 	pop de
 	jr c, .asm_e3b2
 	call Functione3de
@@ -44996,7 +45349,7 @@ CheckPartyFullAfterContest: ; 4d9e5
 	ld de, wd050
 	ld bc, $000b
 	call CopyBytes
-	call Function4db3b
+	call GiveANickname_YesNo
 	jr c, .asm_4da66
 	ld a, [PartyCount]
 	dec a
@@ -45060,7 +45413,7 @@ Function4daa3: ; 4daa3
 	ld a, [CurPartySpecies]
 	ld [wd265], a
 	call GetPokemonName
-	call Function4db3b
+	call GiveANickname_YesNo
 	ld hl, StringBuffer1
 	jr c, .asm_4daf7
 	ld a, BOXMON
@@ -45107,13 +45460,13 @@ Function4db35: ; 4db35
 ; 4db3b
 
 
-Function4db3b: ; 4db3b
-	ld hl, UnknownText_0x4db44
+GiveANickname_YesNo: ; 4db3b
+	ld hl, TextJump_GiveANickname
 	call PrintText
 	jp YesNoBox
 ; 4db44
 
-UnknownText_0x4db44: ; 0x4db44
+TextJump_GiveANickname: ; 0x4db44
 	; Give a nickname to the @  you received?
 	text_jump UnknownText_0x1c12fc
 	db "@"
@@ -45179,7 +45532,7 @@ Function4db92: ; 4db92
 	ret
 ; 4dba3
 
-Function4dba3: ; 4dba3
+SetPkmnCaughtData: ; 4dba3
 	ld a, [PartyCount]
 	dec a
 	ld hl, PartyMon1CaughtLevel
@@ -87951,7 +88304,7 @@ Functionfcc63: ; fcc63
 	jr c, .asm_fcd1c
 	ld b, 1
 .asm_fcd1c
-	callba Function4dba3
+	callba SetPkmnCaughtData
 
 	ld e, TRADE_NICK
 	call GetTradeAttribute
