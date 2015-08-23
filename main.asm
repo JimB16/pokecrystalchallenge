@@ -9635,6 +9635,199 @@ Functione3d4: ; e3d4
 	ret
 ; e3d9
 
+
+;;;;;;;;;;;;
+
+GivePoke2:: ; e277
+	push de
+	push bc
+	xor a
+	ld [MonType], a
+	call AddPkmnToParty2
+	jr nc, .asm_e2b0_
+	ld hl, PartyMonNicknames
+	ld a, [PartyCount]
+	dec a
+	ld [CurPartyMon], a
+	call SkipNames
+	ld d, h
+	ld e, l
+	pop bc
+	ld a, b
+	ld b, $0
+	push bc
+	push de
+	push af
+	ld a, [CurItem]
+	and a
+	jr z, NoItemToSet_
+	ld a, [CurPartyMon]
+	ld hl, PartyMon1Item
+	ld bc, PartyMon2 - PartyMon1
+	call AddNTimes
+	ld a, [CurItem]
+	ld [hl], a
+	jr NoItemToSet_
+
+.asm_e2b0_
+	ld a, [CurPartySpecies]
+	ld [TempEnemyMonSpecies], a
+	callab LoadEnemyMon
+	call Functionde6e
+	jp nc, Functione3d4_
+	ld a, $2
+	ld [MonType], a
+	xor a
+	ld [CurPartyMon], a
+	ld de, wd050
+	pop bc
+	ld a, b
+	ld b, $1
+	push bc
+	push de
+	push af
+	ld a, [CurItem]
+	and a
+	jr z, NoItemToSet_
+	ld a, [CurItem]
+	ld [sBoxMon1Item], a
+
+NoItemToSet_:
+	ld a, [CurPartySpecies]
+	ld [wd265], a
+	ld [TempEnemyMonSpecies], a
+	call GetPokemonName
+	ld hl, StringBuffer1
+	ld de, wd050
+	ld bc, PKMN_NAME_LENGTH
+	call CopyBytes
+	pop af
+	and a
+	jp z, .asm_e390_
+	pop de
+	pop bc
+	pop hl
+	push bc
+	push hl
+	ld a, [ScriptBank]
+	call GetFarHalfword
+	ld bc, PKMN_NAME_LENGTH
+	ld a, [ScriptBank]
+	call FarCopyBytes
+	pop hl
+rept 2
+	inc hl
+endr
+	ld a, [ScriptBank]
+	call GetFarHalfword
+	pop bc
+	ld a, b
+	and a
+	push de
+	push bc
+	jr nz, .asm_e35e_
+	push hl
+	ld a, [CurPartyMon]
+	ld hl, PartyMonOT
+	call SkipNames
+	ld d, h
+	ld e, l
+	pop hl
+.asm_e32f_
+	ld a, [ScriptBank]
+	call GetFarByte
+	ld [de], a
+	inc hl
+	inc de
+	cp "@"
+	jr nz, .asm_e32f_
+	ld a, [ScriptBank]
+	call GetFarByte
+	ld b, a
+	push bc
+	ld a, [CurPartyMon]
+	ld hl, PartyMon1ID
+	ld bc, PartyMon2 - PartyMon1
+	call AddNTimes
+	ld a, $3
+	ld [hli], a
+	ld [hl], $e9
+	pop bc
+	callba SetPkmnCaughtData
+	jr DontGiveANickname_
+
+.asm_e35e_
+	ld a, $1
+	call GetSRAMBank
+	ld de, sBoxMonOT
+.asm_e366_
+	ld a, [ScriptBank]
+	call GetFarByte
+	ld [de], a
+	inc hl
+	inc de
+	cp $50
+	jr nz, .asm_e366_
+	ld a, [ScriptBank]
+	call GetFarByte
+	ld b, a
+	ld hl, sBoxMon1ID
+	call Random
+	ld [hli], a
+	call Random
+	ld [hl], a
+	call CloseSRAM
+	callba Function4db92
+	jr DontGiveANickname_
+
+.asm_e390_
+	pop de
+	pop bc
+	push bc
+	push de
+	ld a, b
+	and a
+	jr z, .asm_e3a0_
+	callba Function4db83
+	jr .asm_e3a6_
+
+.asm_e3a0_
+	callba Function4db49
+
+.asm_e3a6_
+	callba GiveANickname_YesNo
+	pop de
+	jr c, DontGiveANickname_
+	call Functione3de
+DontGiveANickname_:
+	pop bc
+	pop de
+	ld a, b
+	and a
+	ret z
+	ld hl, TextJump_WasSentToBillsPC
+	call PrintText
+	ld a, $1
+	call GetSRAMBank
+	ld hl, wd050
+	ld de, sBoxMonNicknames
+	ld bc, $000b
+	call CopyBytes
+	call CloseSRAM
+	ld b, $1
+	ret
+; e3d4
+
+Functione3d4_: ; e3d4
+	pop bc
+	pop de
+	ld b, $2
+	ret
+; e3d9
+
+;;;;;;;;;;;;
+
+
 UnknownText_0xe3d9: ; 0xe3d9
 	; was sent to BILL's PC.
 	text_jump UnknownText_0x1c0feb
