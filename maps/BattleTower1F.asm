@@ -816,7 +816,7 @@ BattleTower1F_MapEventHeader:
 	person_event SPRITE_BUG_CATCHER, 7, 5, $2, 1, 1, -1, -1, 8 + PAL_OW_BLUE, 0, 0, BugCatcherScript_0x9e56b, -1
 	person_event SPRITE_GRANNY, 7, 18, $4, 1, 0, -1, -1, 0, 0, 0, GrannyScript_0x9e56e, -1
 	person_event SPRITE_RECEPTIONIST, 10, 16, $6, 0, 0, -1, -1, 0, 0, 0, ReceptionistScript_0x9e3e2_, -1
-	
+
 ReceptionistScript_0x9e3e2_:
 	writebyte $2
 	special Function170687
@@ -826,5 +826,92 @@ ReceptionistScript_0x9e3e2_:
 	keeptextopen
 	writebyte $0
 	special Function170687
-	if_not_equal $0, UnknownScript_0x9e3fc
+	if_not_equal $0, Script_Menu_ChallengeExplanationCancel_
 	jump UnknownScript_0x9e49e
+
+Script_Menu_ChallengeExplanationCancel_:
+	writetext Text_WantToGoIntoABattleRoom
+	writebyte $1
+	special Special_Menu_ChallengeExplanationCancel_
+	if_equal $1, Script_TiersRules
+	if_equal $2, Script_ClausesRules
+	jump UnknownScript_0x9e4b0
+	
+Script_TiersRules:
+	writetext Text_TiersRules
+UnknownScript_0x9e4a8_:
+	writebyte $1
+	special Function170687
+	jump Script_Menu_ChallengeExplanationCancel
+	
+Text_TiersRules:
+;	text "BATTLE TOWER is a "   ; Text with max. length
+; Tiers exist to promote balanced gameplay.
+; OU stands for OverUsed and is the main metagame. It is the balanced tier that bans as few #MON as possible. In this game that means you can't use Mewtwo, Mew, Lugia and Ho-Oh. These #MON are seen as too strong and if they're allowed they would lead to an unbalanced metagame.
+	text "Tiers exist to"
+	line "promote balanced"
+	cont "gameplay."
+	para "OU stands for"
+	line "OverUsed and is"
+	cont "the main metagame."
+	para "It is the balanced"
+	line "tier that bans as"
+	para "few #MON as"
+	line "possible."
+	
+	para "In this game that"
+	line "means you can't"
+	para "use Mewtwo, Mew,"
+	line "Lugia and Ho-Oh."
+	para "These #MON are"
+	line "seen as too strong"
+	para "and if they're"
+	line "allowed they would"
+	para "lead to an"
+	line "unbalanced"
+	cont "metagame."
+	done
+
+	
+Script_ClausesRules:
+	writetext Text_ClausesRules
+UnknownScript_0x9e4a8__:
+	writebyte $1
+	special Function170687
+	jump Script_Menu_ChallengeExplanationCancel
+	
+Text_ClausesRules:
+	text "BATTLE TOWER is a"
+	line "facility made for"
+	cont "#MON battles."
+
+	para "Countless #MON"
+	line "trainers gather"
+
+	para "from all over to"
+	line "hold battles in"
+
+	para "specially designed"
+	line "BATTLE ROOMS."
+
+	para "There are many"
+	line "BATTLE ROOMS in"
+	cont "the BATTLE TOWER."
+
+	para "Each ROOM holds"
+	line "seven trainers."
+
+	para "Beat them all, and"
+	line "win a prize."
+
+	para "To interrupt a"
+	line "session, you must"
+
+	para "SAVE. If not, you"
+	line "won't be able to"
+
+	para "resume your ROOM"
+	line "challenge."
+
+	para ""
+	done

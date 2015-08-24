@@ -189,6 +189,7 @@ SpecialsPointers:: ; c029
 	add_special Function90a54
 	add_special Function90a88
 	add_special SpecialNone
+	add_special Special_Menu_ChallengeExplanationCancel_
 ; c224
 
 SpecialNone: ; c224
