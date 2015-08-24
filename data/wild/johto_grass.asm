@@ -1,7 +1,7 @@
 ; Johto Pokémon in grass
 
 	map SPROUT_TOWER_2F
-	db 2 percent, 2 percent, 2 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 3, RATTATA
 	db 4, RATTATA
@@ -28,7 +28,7 @@
 	db 5, RATTATA
 
 	map SPROUT_TOWER_3F
-	db 2 percent, 2 percent, 2 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 3, RATTATA
 	db 4, RATTATA
@@ -271,7 +271,7 @@
 	db 24, RATTATA
 
 	map BURNED_TOWER_1F
-	db 4 percent, 4 percent, 4 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 13, RATTATA
 	db 14, KOFFING
@@ -298,7 +298,7 @@
 	db 15, RATICATE
 
 	map BURNED_TOWER_B1F
-	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 14, RATTATA
 	db 14, KOFFING
@@ -406,7 +406,7 @@
 	db 5, UNOWN
 
 	map UNION_CAVE_1F
-	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 6, GEODUDE
 	db 6, SANDSHREW
@@ -433,7 +433,7 @@
 	db 6, ONIX
 
 	map UNION_CAVE_B1F
-	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 8, GEODUDE
 	db 6, ZUBAT
@@ -460,7 +460,7 @@
 	db 8, RATTATA
 
 	map UNION_CAVE_B2F
-	db 4 percent, 4 percent, 4 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 22, ZUBAT
 	db 22, GOLBAT
@@ -487,7 +487,7 @@
 	db 23, ONIX
 
 	map SLOWPOKE_WELL_B1F
-	db 2 percent, 2 percent, 2 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 5, ZUBAT
 	db 6, ZUBAT
@@ -514,7 +514,7 @@
 	db 8, SLOWPOKE
 
 	map SLOWPOKE_WELL_B2F
-	db 2 percent, 2 percent, 2 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 21, ZUBAT
 	db 23, ZUBAT
@@ -541,7 +541,7 @@
 	db 23, SLOWPOKE
 
 	map ILEX_FOREST
-	db 4 percent, 4 percent, 4 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 5, CATERPIE
 	db 5, WEEDLE
@@ -1189,7 +1189,7 @@
 	db 23, GOLBAT
 
 	map ROUTE_29
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 2, PIDGEY
 	db 2, SENTRET
@@ -1216,7 +1216,7 @@
 	db 3, HOOTHOOT
 
 	map ROUTE_30
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 3, LEDYBA
 	db 3, CATERPIE
@@ -1243,7 +1243,7 @@
 	db 4, HOOTHOOT
 
 	map ROUTE_31
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 4, LEDYBA
 	db 4, CATERPIE
@@ -1270,7 +1270,7 @@
 	db 5, GASTLY
 
 	map ROUTE_32
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 4, EKANS
 	db 5, RATTATA
@@ -1297,7 +1297,7 @@
 	db 7, GASTLY
 
 	map ROUTE_33
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 6, RATTATA
 	db 6, SPEAROW
@@ -1324,7 +1324,7 @@
 	db 7, RATTATA
 
 	map ROUTE_34
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 10, SNUBBULL
 	db 11, RATTATA
@@ -1351,7 +1351,7 @@
 	db 10, DITTO
 
 	map ROUTE_35
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 12, SNUBBULL
 	db 14, PIDGEY
@@ -1378,7 +1378,7 @@
 	db 12, YANMA
 
 	map ROUTE_36
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 4, LEDYBA
 	db 4, PIDGEY
@@ -1405,7 +1405,7 @@
 	db 5, GASTLY
 
 	map ROUTE_37
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 13, LEDYBA
 	db 14, GROWLITHE
@@ -1432,7 +1432,7 @@
 	db 15, ARIADOS
 
 	map ROUTE_38
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 16, RATTATA
 	db 16, RATICATE
@@ -1459,7 +1459,7 @@
 	db 16, MEOWTH
 
 	map ROUTE_39
-	db 2 percent, 2 percent, 2 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 16, RATTATA
 	db 16, RATICATE
@@ -1486,7 +1486,7 @@
 	db 18, MEOWTH
 
 	map ROUTE_42
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 13, EKANS
 	db 14, SPEAROW
@@ -1594,7 +1594,7 @@
 	db 27, GRAVELER
 
 	map ROUTE_46
-	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+	db 0 percent, 0 percent, 0 percent ; encounter rates: morn/day/nite
 	; morn
 	db 2, GEODUDE
 	db 2, SPEAROW

@@ -34,3 +34,10 @@ pokecrystal.txt
 # swap files for gedit
 *~
 
+
+
+gfx/credits/*.2bpp
+gfx/misc/badges.2bpp
+gfx/misc/fo*bpp
+gfx/misc/pack.2bpp
+gfx/misc/pack_f.2bpp

@@ -49,7 +49,7 @@ $(foreach obj, $(all_obj), \
 )
 
 
-roms := pokecrystal.gbc
+roms := pokecrystal.gbc pokecrystal11.gbc
 
 all: $(roms)
 crystal: pokecrystal.gbc

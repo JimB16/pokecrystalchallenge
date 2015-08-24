@@ -809,9 +809,22 @@ BattleTower1F_MapEventHeader:
 	signpost 6, 6, SIGNPOST_READ, MapBattleTower1FSignpost0Script
 
 .PersonEvents:
-	db 5
+	db 5+1
 	person_event SPRITE_RECEPTIONIST, 10, 11, $6, 0, 0, -1, -1, 0, 0, 0, ReceptionistScript_0x9e3e2, -1
 	person_event SPRITE_YOUNGSTER, 13, 18, $9, 0, 0, -1, -1, 8 + PAL_OW_BROWN, 0, 0, YoungsterScript_0x9e55d, -1
 	person_event SPRITE_COOLTRAINER_F, 13, 8, $5, 0, 1, -1, -1, 8 + PAL_OW_RED, 0, 0, CooltrainerFScript_0x9e568, -1
 	person_event SPRITE_BUG_CATCHER, 7, 5, $2, 1, 1, -1, -1, 8 + PAL_OW_BLUE, 0, 0, BugCatcherScript_0x9e56b, -1
 	person_event SPRITE_GRANNY, 7, 18, $4, 1, 0, -1, -1, 0, 0, 0, GrannyScript_0x9e56e, -1
+	person_event SPRITE_RECEPTIONIST, 10, 16, $6, 0, 0, -1, -1, 0, 0, 0, ReceptionistScript_0x9e3e2_, -1
+	
+ReceptionistScript_0x9e3e2_:
+	writebyte $2
+	special Function170687
+	if_equal $3, BattleTowerBattleRoomScript_0x9f4e4
+	loadfont
+	writetext UnknownText_0x9e5ab
+	keeptextopen
+	writebyte $0
+	special Function170687
+	if_not_equal $0, UnknownScript_0x9e3fc
+	jump UnknownScript_0x9e49e

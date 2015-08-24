@@ -141,8 +141,35 @@ BattleTowerOutside_MapEventHeader:
 	signpost 10, 10, SIGNPOST_READ, MapBattleTowerOutsideSignpost0Script
 
 .PersonEvents:
-	db 4
+	db 4+1
 	person_event SPRITE_STANDING_YOUNGSTER, 16, 10, $7, 0, 0, -1, -1, 8 + PAL_OW_RED, 0, 0, StandingYoungsterScript_0x9f85f, -1
 	person_event SPRITE_BUENA, 15, 17, $2, 1, 1, -1, -1, 8 + PAL_OW_GREEN, 0, 0, BuenaScript_0x9f862, -1
 	person_event SPRITE_SAILOR, 22, 16, $5, 0, 1, -1, -1, 0, 0, 0, SailorScript_0x9f865, EVENT_BATTLE_TOWER_OUTSIDE_SAILOR
 	person_event SPRITE_LASS, 28, 16, $3, 0, 0, -1, -1, 8 + PAL_OW_GREEN, 0, 0, ObjectEvent, -1
+	person_event SPRITE_POKE_BALL, 15, 8, $1, 0, 0, -1, -1, 0, 0, 0, MapNewBarkTownSignpost4Script, -1
+
+MapNewBarkTownSignpost4Script:
+	loadfont
+	writetext OwnText3
+	keeptextopen
+	giveitem PP_UP, 10
+	givepoke2 NIDOKING, 100, LEFTOVERS, EARTHQUAKE, LOVELY_KISS, ICE_BEAM, THUNDERBOLT, NORMAL
+	givepoke2 CHARIZARD, 100, LEFTOVERS, BELLY_DRUM, EARTHQUAKE, FIRE_BLAST, ROCK_SLIDE, NORMAL
+	givepoke2 MAROWAK, 100, THICK_CLUB, EARTHQUAKE, ROCK_SLIDE, HIDDEN_POWER, SWORDS_DANCE, BUG
+	givepoke2 STARMIE, 100, LEFTOVERS, SURF, RAPID_SPIN, RECOVER, PSYCHIC_M, NORMAL
+	givepoke2 ZAPDOS, 100, LEFTOVERS, THUNDERBOLT, HIDDEN_POWER, REST, SLEEP_TALK, ICE
+	jumptext OwnText2
+
+OwnText3:
+	text "Now you get sth."
+	done
+	
+OwnText2:
+	text "Hello, <PLAYER>."
+
+	para "Now you got every-"
+	line "thing you need,"
+	cont "to fight in this"
+	cont "game."
+	done
+	
