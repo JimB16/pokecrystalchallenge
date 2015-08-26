@@ -406,6 +406,7 @@ MAP_NONE   EQU 0
 	mapgroup ROUTE_27, 9, 40
 	mapgroup ROUTE_29, 9, 30
 	mapgroup NEW_BARK_TOWN, 9, 10
+;	mapgroup NEW_BARK_TOWN_BETA, 9, 10
 	mapgroup ELMS_LAB, 6, 5
 	mapgroup KRISS_HOUSE_1F, 4, 5
 	mapgroup KRISS_HOUSE_2F, 3, 4

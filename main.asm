@@ -94077,7 +94077,8 @@ INCLUDE "text/battle_tower.asm"
 
 SECTION "bank7C", ROMX, BANK[$7C]
 
-Unknown_1f0000::
+BattleTowerTrainerData:: ; What exactly it is, I don't know
+; Size is 70 (Nr of Trainers in BattleTower) * 0x24 (Nr of Bytes that are copied)
 INCBIN "unknown/1f0000.bin"
 
 

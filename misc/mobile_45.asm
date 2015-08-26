@@ -22937,6 +22937,7 @@ Function1702b7: ; 1702b7
 	ld de, wd26b
 	ld bc, $000a
 	call CopyBytes
+
 	ld a, $50
 	ld [de], a
 	ld hl, $c608 + 10
@@ -22948,10 +22949,12 @@ Function1702b7: ; 1702b7
 	ld [wcd21], a
 	ld de, OTPartyMon1Species
 	ld bc, OTPartyCount
-	ld a, $3
+	ld a, $6 ; Number of Pkmn the BattleTower-Trainer has
 	ld [bc], a
 	inc bc
+	
 .asm_170367
+;	push hl ;;
 	push af
 	ld a, [hl]
 	ld [bc], a
@@ -22973,6 +22976,7 @@ Function1702b7: ; 1702b7
 	pop de
 	pop bc
 	pop af
+;	pop hl ;;
 	dec a
 	and a
 	jr nz, .asm_170367
@@ -23172,7 +23176,7 @@ Function1704a2: ; 1704a2
 	ld [rSVBK], a
 	ld hl, LYOverrides
 	ld de, $c608
-	ld bc, $00e0
+	ld bc, $00e0+$40*3 ;;
 	call CopyBytes
 	pop af
 	ld [rSVBK], a
@@ -24219,6 +24223,49 @@ Function_LoadOpponentTrainerAndPokemons170b44: ; 0x170b44
 	callba Function143c8
 	ret
 ; 170b90
+
+Function_LoadOpponentTrainerAndPokemons170b44_Own: ; 0x170b44
+	callba Function_LoadOpponentTrainerAndPokemons_Own
+	ld a, [rSVBK]
+	push af
+	ld a, $3
+	ld [rSVBK], a
+	ld hl, wd10a
+	ld a, [hl]
+	dec a
+	ld c, a
+	ld b, $0
+	pop af
+	ld [rSVBK], a
+	ld hl, Unknown_170b90
+	add hl, bc
+	ld a, [hl]
+	ld [wcd49], a
+	ld a, [ScriptVar]
+	dec a
+	sla a
+	ld e, a
+	sla a
+	sla a
+	sla a
+	ld c, a
+	ld b, $0
+	ld d, $0
+	ld hl, MapObjects
+	add hl, bc
+	inc hl
+	ld a, [wcd49]
+	ld [hl], a
+	ld hl, UsedSprites
+	add hl, de
+	ld [hli], a
+	ld [$ffbd], a
+	ld a, [hl]
+	ld [$ffbe], a
+	callba Function143c8
+	ret
+; 170b90
+
 
 Unknown_170b90:
 	db $12, $13, $14, $15, $18, $17

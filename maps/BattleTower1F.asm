@@ -809,25 +809,72 @@ BattleTower1F_MapEventHeader:
 	signpost 6, 6, SIGNPOST_READ, MapBattleTower1FSignpost0Script
 
 .PersonEvents:
-	db 5+1
+	db 5+2
 	person_event SPRITE_RECEPTIONIST, 10, 11, $6, 0, 0, -1, -1, 0, 0, 0, ReceptionistScript_0x9e3e2, -1
 	person_event SPRITE_YOUNGSTER, 13, 18, $9, 0, 0, -1, -1, 8 + PAL_OW_BROWN, 0, 0, YoungsterScript_0x9e55d, -1
 	person_event SPRITE_COOLTRAINER_F, 13, 8, $5, 0, 1, -1, -1, 8 + PAL_OW_RED, 0, 0, CooltrainerFScript_0x9e568, -1
 	person_event SPRITE_BUG_CATCHER, 7, 5, $2, 1, 1, -1, -1, 8 + PAL_OW_BLUE, 0, 0, BugCatcherScript_0x9e56b, -1
 	person_event SPRITE_GRANNY, 7, 18, $4, 1, 0, -1, -1, 0, 0, 0, GrannyScript_0x9e56e, -1
 	person_event SPRITE_RECEPTIONIST, 10, 16, $6, 0, 0, -1, -1, 0, 0, 0, ReceptionistScript_0x9e3e2_, -1
+	person_event SPRITE_RECEPTIONIST, 5, 7, $6, 0, 0, -1, -1, 0, 0, 0, Script_BattleRoom_, -1
+
+Script_BattleRoom_: ; 0x9f421
+;	applymovement PLAYER, MovementData_0x9e58c
+; beat all 7 opponents in a row
+;Script_BattleRoomLoop: ; 0x9f425
+	writebyte $2
+	special Function_LoadOpponentTrainerAndPokemons170b44_Own
+	appear $2
+	warpsound
+	waitbutton
+	applymovement $2, MovementData_0x9e592
+	loadfont
+	storetext 1
+	keeptextopen
+	loadmovesprites
+	special Function170215 ; calls predef startbattle
+	special FadeBlackBGMap
+	reloadmap
+;	if_not_equal $0, UnknownScript_0x9f4c2
+;	copybytetovar wcf64
+;	if_equal $7, Script_BeatenAllTrainers
+;	applymovement $2, MovementData_0x9e597
+;	warpsound
+;	disappear $2
+;	applymovement $3, MovementData_0x9e59c
+;	applymovement PLAYER, MovementData_0x9e5a7
+;	loadfont
+;	writetext Text_YourPkmnWillBeHealedToFullHealth
+;	closetext
+;	loadmovesprites
+;	playmusic MUSIC_HEAL
+;	special FadeBlackBGMap
+;	special LoadMapPalettes
+;	pause 60
+;	special FadeInBGMap
+;	special RestartMapMusic
+;	loadfont
+;	writetext Text_NextUpOpponentNo
+;	yesorno
+;	iffalse Script_DontBattleNextOpponent
+;Script_ContinueAndBattleNextOpponent: ; 0x9f477
+;	loadmovesprites
+;	applymovement PLAYER, MovementData_0x9e5a9
+;	applymovement $3, MovementData_0x9e5a1
+;	jump Script_BattleRoomLoop
+	end
 
 ReceptionistScript_0x9e3e2_:
 	writebyte $2
 	special Function170687
 	if_equal $3, BattleTowerBattleRoomScript_0x9f4e4
 	loadfont
-	writetext UnknownText_0x9e5ab
+	writetext Text_BattleTowerWelcomesYou
 	keeptextopen
 	writebyte $0
 	special Function170687
 	if_not_equal $0, Script_Menu_ChallengeExplanationCancel_
-	jump UnknownScript_0x9e49e
+	jump Script_BattleTowerIntroductionYesNo
 
 Script_Menu_ChallengeExplanationCancel_:
 	writetext Text_WantToGoIntoABattleRoom
