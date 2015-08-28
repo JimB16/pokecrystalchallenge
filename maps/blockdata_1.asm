@@ -139,6 +139,20 @@ Route46_BlockData:
 
 FuchsiaCity_BlockData:
 	INCBIN "maps/FuchsiaCity.blk"
+;	INCBIN "maps/FuchsiaCity_00_0009.blk"
+;	INCBIN "maps/FuchsiaCity_01_0a13.blk"
+;	INCBIN "maps/FuchsiaCity_02_141d.blk"
+;	INCBIN "maps/FuchsiaCity_03_1e27.blk"
+;	INCBIN "maps/FuchsiaCity_04_2831.blk"
+;	INCBIN "maps/FuchsiaCity_05_323b.blk"
+;	INCBIN "maps/FuchsiaCity_06_3c45.blk"
+;	INCBIN "maps/FuchsiaCity_07_464f.blk"
+;	INCBIN "maps/FuchsiaCity_08_5059.blk"
+;	INCBIN "maps/FuchsiaCity_09_5a63.blk"
+;	INCBIN "maps/FuchsiaCity_10_646d.blk"
+;	INCBIN "maps/FuchsiaCity_11_6e77.blk"
+;	INCBIN "maps/FuchsiaCity_12_7881.blk"
+;	INCBIN "maps/FuchsiaCity_13_828b.blk"
 
 Route38_BlockData:
 	INCBIN "maps/Route38.blk"
@@ -197,6 +211,13 @@ GuideGentsHouse_BlockData:
 CherrygroveEvolutionSpeechHouse_BlockData:
 Route30BerrySpeechHouse_BlockData:
 	INCBIN "maps/OlivineVoltorbHouse.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_00_0009.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_01_0a13.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_02_141d.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_03_1e27.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_04_2831.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_05_323b.blk"
+;	INCBIN "maps/OlivineVoltorbHouse_06_3c45.blk"
 
 SafariZoneFuchsiaGateBeta_BlockData:
 Route19FuchsiaGate_BlockData:
@@ -288,7 +309,23 @@ BetaOlivineCity_BlockData:
 	INCBIN "maps/BetaOlivineCity.blk"
 
 BetaNewBarkTown_BlockData:
+NewBarkTownBeta_BlockData:
 	INCBIN "maps/BetaNewBarkTown.blk"
+;	INCBIN "maps/BetaNewBarkTown_000009.blk"
+;	INCBIN "maps/BetaNewBarkTown_010a13.blk"
+;	INCBIN "maps/BetaNewBarkTown_02141d.blk"
+;	INCBIN "maps/BetaNewBarkTown_031e27.blk"
+;	INCBIN "maps/BetaNewBarkTown_042831.blk"
+;	INCBIN "maps/BetaNewBarkTown_05323b.blk"
+;	INCBIN "maps/BetaNewBarkTown_063c45.blk"
+;	INCBIN "maps/BetaNewBarkTown_07464f.blk"
+;	INCBIN "maps/BetaNewBarkTown_085059.blk"
+
+;	INCBIN "maps/BetaNewBarkTown_095a63.blk"
+;	INCBIN "maps/BetaNewBarkTown_10646d.blk"
+;	INCBIN "maps/BetaNewBarkTown_116e77.blk"
+;	INCBIN "maps/BetaNewBarkTown_127881.blk"
+;	INCBIN "maps/BetaNewBarkTown_13828b.blk"
 
 ElmsLab_BlockData:
 	INCBIN "maps/ElmsLab.blk"

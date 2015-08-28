@@ -22782,6 +22782,26 @@ Function17020c: ; 17020c
 ; 170215
 
 Function170215: ; 170215
+;	push hl
+;	push af
+;	push bc
+;	ld a, BANK(sbe46)
+;	call GetSRAMBank
+;	ld a, 17
+;	ld c, a
+;	ld hl, sbe46
+;looperase:
+;	xor a
+;	ld [hli], a
+;	dec c
+;	ld a, c
+;	and a
+;	jr nz, looperase
+;	call CloseSRAM
+;	pop bc
+;	pop af
+;	pop hl
+
 	xor a
 	ld [wcf63], a
 	call Function17022c

@@ -1,14 +1,13 @@
 Tileset03GFX: ; 0x18000
 INCBIN "gfx/tilesets/03.2bpp.lz"
-; 0x18606
 
 Tileset03Meta: ; 0x18606
-INCBIN "tilesets/03_metatiles.bin"
-; 0x18e06
+;INCBIN "tilesets/03_metatiles.bin"
+INCLUDE "tilesets/03_metatiles.asm"
 
 Tileset03Coll: ; 0x18e06
-INCBIN "tilesets/03_collision.bin"
-; 0x19006
+;INCBIN "tilesets/03_collision.bin"
+INCLUDE "tilesets/03_collision.asm"
 
 Tileset00GFX: ; 0x19006
 Tileset01GFX: ; 0x19006

@@ -285,11 +285,22 @@ NewBarkTown_MapEventHeader:
 	db 0, 0
 
 .Warps:
-	db 4
-	warp_def $3, $6, 1, ELMS_LAB
+	db 4;+1
+	; $8 Colosseum
+	; $d CeladonMansion3F
+	; $5 CELADON_MANSION_ROOF_HOUSE
+	; $19 NationalPark
+	; $13 FastShipCabins_NNW_NNE_NE
+;	warp_def $3, $6, 10, FUCHSIA_CITY ; Tileset 0x3
+;	warp_def $3, $6, 1, CELADON_MANSION_ROOF_HOUSE ; Tileset 0x5
+;	warp_def $3, $6, 1, GOLDENROD_DEPT_STORE_2F ; Tileset 0xC
+;	warp_def $3, $6, 3, CELADON_MANSION_3F ; Tileset 0xD
+;	warp_def $3, $6, 1, CELADON_CAFE ; Tileset 0xE
+	warp_def $3, $6, 1, BATTLE_TOWER_1F;1, BATTLE_ISLAND_TS_03;10, FUCHSIA_CITY;ROUTE_19___FUCHSIA_GATE;ELMS_LAB
 	warp_def $5, $d, 1, KRISS_HOUSE_1F
 	warp_def $b, $3, 1, KRISS_NEIGHBORS_HOUSE
 	warp_def $d, $b, 1, ELMS_HOUSE
+;	warp_def $23, $7+1, 1, ROUTE_19___FUCHSIA_GATE
 
 .XYTriggers:
 	db 2

@@ -137,6 +137,13 @@ BetaHouse2_BlockData:
 
 CeladonCafe_BlockData:
 	INCBIN "maps/CeladonCafe.blk"
+;	INCBIN "maps/CeladonCafe_00_0009.blk"
+;	INCBIN "maps/CeladonCafe_01_0a13.blk"
+;	INCBIN "maps/CeladonCafe_02_141d.blk"
+;	INCBIN "maps/CeladonCafe_03_1e27.blk"
+;	INCBIN "maps/CeladonCafe_04_2831.blk"
+;	INCBIN "maps/CeladonCafe_05_323b.blk"
+;	INCBIN "maps/CeladonCafe_06_3c45.blk"
 
 BetaCeladonMansion_BlockData:
 	INCBIN "maps/BetaCeladonMansion.blk"
@@ -264,3 +271,7 @@ BetaBlank_BlockData:
 
 GoldenrodDeptStoreRoof_BlockData:
 	INCBIN "maps/GoldenrodDeptStoreRoof.blk"
+
+
+BattleIslandTS03_BlockData:
+	INCLUDE "maps/BattleIslandTS03.asm"

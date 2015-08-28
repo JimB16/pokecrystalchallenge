@@ -205,7 +205,7 @@ CeladonMansion3F_MapEventHeader:
 	signpost 3, 1, SIGNPOST_UP, MapCeladonMansion3FSignpost3Script
 
 .PersonEvents:
-	db 4
+	db 0;;4
 	person_event SPRITE_COOLTRAINER_M, 10, 7, $3, 0, 0, -1, -1, 8 + PAL_OW_RED, 0, 0, CooltrainerMScript_0x71670, -1
 	person_event SPRITE_GYM_GUY, 8, 7, $7, 0, 0, -1, -1, 8 + PAL_OW_BLUE, 0, 0, GymGuyScript_0x71696, -1
 	person_event SPRITE_SUPER_NERD, 11, 4, $7, 0, 0, -1, -1, 8 + PAL_OW_BLUE, 0, 0, SuperNerdScript_0x716bc, -1

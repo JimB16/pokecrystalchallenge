@@ -1,8 +1,14 @@
 
-	map_header_2 NewBarkTown, NEW_BARK_TOWN, $5, WEST | EAST
+	map_header_2 NewBarkTown, NEW_BARK_TOWN, $5, SOUTH | WEST | EAST
+	connection south, NEW_BARK_TOWN_BETA, NewBarkTownBeta, 0, 0, 9, NEW_BARK_TOWN
+;	connection south, FUCHSIA_CITY, FuchsiaCity, 0, 0, 13, NEW_BARK_TOWN
 	connection west, ROUTE_29, Route29, 0, 0, 9, NEW_BARK_TOWN
 	connection east, ROUTE_27, Route27, 0, 0, 9, NEW_BARK_TOWN
 
+	map_header_2 NewBarkTownBeta, NEW_BARK_TOWN_BETA, $5, NORTH
+	connection north, NEW_BARK_TOWN, NewBarkTown, 0, 0, 9, NEW_BARK_TOWN_BETA
+;	connection north, FUCHSIA_CITY, FuchsiaCity, 5, 0, 13, NEW_BARK_TOWN_BETA
+	
 	map_header_2 CherrygroveCity, CHERRYGROVE_CITY, $35, NORTH | EAST
 	connection north, ROUTE_30, Route30, 5, 0, 10, CHERRYGROVE_CITY
 	connection east, ROUTE_29, Route29, 0, 0, 9, CHERRYGROVE_CITY
@@ -597,3 +603,6 @@
 	map_header_2 Route30BerrySpeechHouse, ROUTE_30_BERRY_SPEECH_HOUSE, $0, NONE
 	map_header_2 MrPokemonsHouse, MR_POKEMONS_HOUSE, $0, NONE
 	map_header_2 Route31VioletGate, ROUTE_31_VIOLET_GATE, $0, NONE
+
+	map_header_2 BattleIslandTS03, BATTLE_ISLAND_TS_03, $f, NONE
+	

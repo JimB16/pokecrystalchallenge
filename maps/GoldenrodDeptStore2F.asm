@@ -112,7 +112,7 @@ GoldenrodDeptStore2F_MapEventHeader:
 	signpost 0, 3, SIGNPOST_READ, GoldenrodDeptStore2FElevatorButton
 
 .PersonEvents:
-	db 5
+	db 0;5
 	person_event SPRITE_CLERK, 9, 17, $7, 0, 0, -1, -1, 0, 0, 0, ClerkScript_0x55b5d, -1
 	person_event SPRITE_CLERK, 10, 17, $8, 0, 0, -1, -1, 0, 0, 0, ClerkScript_0x55b65, -1
 	person_event SPRITE_YOUNGSTER, 10, 13, $4, 1, 0, -1, -1, 0, 0, 0, YoungsterScript_0x55b6d, -1

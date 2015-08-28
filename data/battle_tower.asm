@@ -118,14 +118,15 @@ ENDC
 	ld b, a
 	ld a, BANK(sbe46)
 	call GetSRAMBank
+	
 	ld c, $7
 	ld hl, sBTTrainers
 .asm_1f803a
 	ld a, [hli]
 	cp b
-	jr z, .asm_1f8022
+;	jr z, .asm_1f8022
 	dec c
-	jr nz, .asm_1f803a ; c <= 7  initialise all 7 trainers?
+;	jr nz, .asm_1f803a ; c <= 7  initialise all 7 trainers?
 	ld hl, sBTTrainers
 	ld a, [sbe46]
 	ld c, a
@@ -284,7 +285,7 @@ Function_LoadRandomBattleTowerPkmn: ; 1f8081
 Function_LoadRandomBattleTowerPkmn_Own: ; 1f8081
 	ld c, 6
 	push hl
-	ld a, 0
+	ld a, $0
 	ld hl, InitPkmnLoop
 	ld [hl], a
 	pop hl
@@ -296,34 +297,23 @@ Function_LoadRandomBattleTowerPkmn_Own: ; 1f8081
 .asm_1f8089
 	; From Which LevelGroup are the Pkmn loaded
 	; a = 1..10
-	ld a, 1;;
-;	ld a, [$d800]
-;	dec a
-	ld hl, BattleTowerMons
-	ld bc, BattleTowerMons2 - BattleTowerMons1
-	call AddNTimes
+;	ld a, 1;;
+;	ld hl, BattleTowerMons
+;	ld bc, BattleTowerMons2 - BattleTowerMons1
+;	call AddNTimes
+	ld hl, Battle_Tower_Own
 
-	ld a, [hRandomAdd]
-	ld a, [InitPkmnLoop]
-	ld b, a
 .asm_1f8099
 	ld a, [InitPkmnLoop]
-;	call Random
-;	ld a, [hRandomAdd]
-;	add b
-;	ld b, a
-	and $1f
-	cp (BattleTowerMons2 - BattleTowerMons1) / ($3b)
-	jr nc, .asm_1f8099
-	; in register 'a' is the chosen Pkmn of the LevelGroup
 
 	;ld a, 0;;
-	inc a
-	ld bc, InitPkmnLoop
-	ld [bc], a
 	ld bc, $3b
 	call AddNTimes
 
+	ld a, [InitPkmnLoop]
+	inc a
+	ld [InitPkmnLoop], a
+	
 	ld bc, $3b
 	call CopyBytes
 	ld a, [wd265]
@@ -349,18 +339,6 @@ Function_LoadRandomBattleTowerPkmn_Own: ; 1f8081
 	dec c
 	jp nz, .loop
 
-	ld a, [BTPkmnCurTrainer1]
-	ld [BTPkmnPrevTrainer1], a
-	ld a, [BTPkmnCurTrainer2]
-	ld [BTPkmnPrevTrainer2], a
-	ld a, [BTPkmnCurTrainer3]
-	ld [BTPkmnPrevTrainer3], a
-	ld a, [BT_OTTrainerPkmn1]
-	ld [BTPkmnCurTrainer1], a
-	ld a, [BT_OTTrainerPkmn2]
-	ld [BTPkmnCurTrainer2], a
-	ld a, [BT_OTTrainerPkmn3]
-	ld [BTPkmnCurTrainer3], a
 	call CloseSRAM
 	ret
 
@@ -6147,3 +6125,5 @@ BattleTowerMons10:
 	bigdw 214 ; SAtk
 	bigdw 214 ; SDef
 	db "RANTA-N@@@@"
+
+INCLUDE "data/battle_tower_own.asm"

@@ -48,7 +48,8 @@
 	const DARK_CAVE
 	const ROUTE_46
 	const SILVER_CAVE
-;	const NEW_BARK_TOWN_BETA
+	const NEW_BARK_TOWN_BETA
+	const BATTLE_ISLAND_TS_03
 
 KANTO_LANDMARK EQU const_value
 

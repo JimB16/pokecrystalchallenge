@@ -21,6 +21,8 @@ MAP_NONE   EQU 0
 	mapgroup ROUTE_38, 9, 20
 	mapgroup ROUTE_39, 18, 10
 	mapgroup OLIVINE_CITY, 18, 20
+	
+	mapgroup BATTLE_ISLAND_TS_03, 25, 25
 
 	newgroup
 	mapgroup MAHOGANY_RED_GYARADOS_SPEECH_HOUSE, 4, 4
@@ -354,15 +356,15 @@ MAP_NONE   EQU 0
 	mapgroup CELADON_DEPT_STORE_ELEVATOR, 2, 2
 	mapgroup CELADON_MANSION_1F, 5, 4
 	mapgroup CELADON_MANSION_2F, 5, 4
-	mapgroup CELADON_MANSION_3F, 5, 4
+	mapgroup CELADON_MANSION_3F, 5, 4 ;; 5, 5
 	mapgroup CELADON_MANSION_ROOF, 5, 4
-	mapgroup CELADON_MANSION_ROOF_HOUSE, 4, 4
+	mapgroup CELADON_MANSION_ROOF_HOUSE, 4, 4 ;; 4, 7
 	mapgroup CELADON_POKECENTER_1F, 4, 5
 	mapgroup CELADON_POKECENTER_2F_BETA, 4, 8
 	mapgroup CELADON_GAME_CORNER, 7, 10
 	mapgroup CELADON_GAME_CORNER_PRIZE_ROOM, 3, 3
 	mapgroup CELADON_GYM, 9, 5
-	mapgroup CELADON_CAFE, 4, 6
+	mapgroup CELADON_CAFE, 4, 6 ;; 4, 6+3
 	mapgroup ROUTE_16_FUCHSIA_SPEECH_HOUSE, 4, 4
 	mapgroup ROUTE_16_GATE, 4, 5
 	mapgroup ROUTE_7_SAFFRON_GATE, 4, 5
@@ -406,7 +408,7 @@ MAP_NONE   EQU 0
 	mapgroup ROUTE_27, 9, 40
 	mapgroup ROUTE_29, 9, 30
 	mapgroup NEW_BARK_TOWN, 9, 10
-;	mapgroup NEW_BARK_TOWN_BETA, 9, 10
+	mapgroup NEW_BARK_TOWN_BETA, 9, 10
 	mapgroup ELMS_LAB, 6, 5
 	mapgroup KRISS_HOUSE_1F, 4, 5
 	mapgroup KRISS_HOUSE_2F, 3, 4
@@ -656,6 +658,18 @@ const_value SET 1
 	const PAL_OW_SILVER
 	const PAL_OW_TREE
 	const PAL_OW_ROCK
+
+; NPC movement pattern
+const_value SET 1
+	const DONTKNOW1
+	const DONTKNOW2
+	const RANDOM_ROTATE ; 3
+	const RANDOM_WALK ; 4
+	const DONTKNOW5
+	const DONTKNOW6
+	const DONTKNOW7
+	const DONTKNOW8
+	const DONTKNOW9
 
 ; permissions
 const_value SET 1

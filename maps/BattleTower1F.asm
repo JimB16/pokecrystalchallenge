@@ -9,7 +9,7 @@ BattleTower1F_MapScriptHeader:
 .MapCallbacks:
 	db 0
 
-UnknownScript_0x9e39d:
+UnknownScript_0x9e39d::
 	writebyte $9
 	special Function170687
 	iffalse UnknownScript_0x9e3d1
@@ -26,7 +26,7 @@ UnknownScript_0x9e39d:
 	priorityjump UnknownScript_0x9e44e
 	end
 
-UnknownScript_0x9e3c4:
+UnknownScript_0x9e3c4::
 	priorityjump UnknownScript_0x9e555
 
 UnknownScript_0x9e3c7:

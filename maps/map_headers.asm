@@ -44,6 +44,8 @@ MapGroup1:
 	map_header Route38, $1, ROUTE, ROUTE_38, MUSIC_ROUTE_37, 0, 0, 1
 	map_header Route39, $1, ROUTE, ROUTE_39, MUSIC_ROUTE_37, 0, 0, 1
 	map_header OlivineCity, $1, TOWN, OLIVINE_CITY, MUSIC_VIOLET_CITY, 0, 0, 1
+	
+	map_header BattleIslandTS03, $3, TOWN, BATTLE_ISLAND_TS_03, MUSIC_NEW_BARK_TOWN, 0, 0, 2
 
 
 MapGroup2:
@@ -452,6 +454,7 @@ MapGroup24:
 	map_header Route27, $1, ROUTE, ROUTE_27, MUSIC_ROUTE_26, 0, 0, 2
 	map_header Route29, $1, ROUTE, ROUTE_29, MUSIC_ROUTE_29, 0, 0, 1
 	map_header NewBarkTown, $1, TOWN, NEW_BARK_TOWN, MUSIC_NEW_BARK_TOWN, 0, 0, 2
+	map_header NewBarkTownBeta, $1, TOWN, NEW_BARK_TOWN_BETA, MUSIC_NEW_BARK_TOWN, 0, 0, 2
 	map_header ElmsLab, $a, INDOOR, NEW_BARK_TOWN, MUSIC_PROF_ELM, 0, 1, 1
 	map_header KrissHouse1F, $6, INDOOR, NEW_BARK_TOWN, MUSIC_NEW_BARK_TOWN, 0, 1, 1
 	map_header KrissHouse2F, $14, INDOOR, NEW_BARK_TOWN, MUSIC_NEW_BARK_TOWN, 0, 1, 1
