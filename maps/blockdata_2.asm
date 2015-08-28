@@ -75,14 +75,14 @@ CeladonDeptStore1F_BlockData:
 
 GoldenrodDeptStore2F_BlockData:
 CeladonDeptStore2F_BlockData:
-;	INCBIN "maps/GoldenrodDeptStore2F.blk"
+	INCBIN "maps/GoldenrodDeptStore2F.blk"
 ;	INCBIN "maps/GoldenrodDeptStore2F_00_0009.blk"
 ;	INCBIN "maps/GoldenrodDeptStore2F_01_0a13.blk"
 ;	INCBIN "maps/GoldenrodDeptStore2F_02_141d.blk"
 ;	INCBIN "maps/GoldenrodDeptStore2F_03_1e27.blk"
 ;	INCBIN "maps/GoldenrodDeptStore2F_04_2831.blk"
 ;	INCBIN "maps/GoldenrodDeptStore2F_05_323b.blk"
-	INCBIN "maps/GoldenrodDeptStore2F_06_3c45.blk"
+;	INCBIN "maps/GoldenrodDeptStore2F_06_3c45.blk"
 
 GoldenrodDeptStore3F_BlockData:
 CeladonDeptStore3F_BlockData:
