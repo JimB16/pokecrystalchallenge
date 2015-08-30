@@ -884,6 +884,16 @@ wMiscEnd::
 wc7e8:: ds 24
 
 
+RSSET $c608 ;$c000+(wc608-wc000) ; compute the address through doesn't seem to work
+BT_OTTempCopy    RW   1
+str_tData     RB   256
+str_bCount    RB   1
+str_SIZEOF    RB   0
+
+GLOBAL BT_OTTempCopy
+
+
+
 SECTION "Overworld Map", WRAM0 [$c800]
 
 wc800::
@@ -1829,6 +1839,7 @@ wd25e:: ds 4
 wd262:: ds 1
 wd263:: ds 1
 wd264:: ds 1
+GetPokemonName_Parameter::
 wd265:: ds 1
 wd266:: ds 1
 wd267:: ds 1
@@ -2611,26 +2622,26 @@ SECTION "WRAM 3", WRAMX, BANK [3]
 
 	ds $100
 
-BT_OTTrainer::
-w3_d100::
+BT_OTrainer::
+w3_d100:: ; BattleTower OpponentTrainer-Data (lengt = 0xe0)
 	ds $6
-BT_OTTrainerPkmn1::
-w3_d10b::
+	ds $5
+BT_OTPkmn1:: ; w3_d10b
 	ds $1
-BT_OTTrainerPkmn1Item::
+BT_OTPkmn1Item::
 	ds $3b-1
-BT_OTTrainerPkmn2::
-w3_d146::
+BT_OTPkmn2:: ; w3_d146
 	ds $1
-BT_OTTrainerPkmn2Item::
+BT_OTPkmn2Item::
 	ds $3b-1
-BT_OTTrainerPkmn3::
-w3_d181::
+BT_OTPkmn3:: ; w3_d181
 	ds $1
-BT_OTTrainerPkmn3Item::
+BT_OTPkmn3Item::
 	ds $3b-1
 	
-	ds $29
+	ds $24
+BT_OTrainerEnd::
+
 	ds $620
 
 w3_d800:: ds 1
@@ -2809,16 +2820,23 @@ sbe47:: ds 1
 ; The 7 trainers of the BattleTower are saved here, so nobody appears more than once
 sBTTrainers::
 sbe48:: ds 7
-sbe4f:: ds 2
+sbe4f:: ds 1
+sbe50:: ds 1
 ; Pkmn of current trainer (maybe previous trainer)
-BTPkmnOfTrainers::
-BTPkmnCurTrainer1:: ds 1
-BTPkmnCurTrainer2:: ds 1
-BTPkmnCurTrainer3:: ds 1
+sbe51::
+sBTPkmnOfTrainers::
+sBTPkmnPrevTrainer1:: ds 1
+sbe52::
+sBTPkmnPrevTrainer2:: ds 1
+sbe53::
+sBTPkmnPrevTrainer3:: ds 1
 ; Pkmn of previous trainer (maybe preprevious trainer)
-BTPkmnPrevTrainer1:: ds 1
-BTPkmnPrevTrainer2:: ds 1
-BTPkmnPrevTrainer3:: ds 1
+sbe54::
+sBTPkmnPrevPrevTrainer1:: ds 1
+sbe55::
+sBTPkmnPrevPrevTrainer2:: ds 1
+sbe56::
+sBTPkmnPrevPrevTrainer3:: ds 1
 
 
 SECTION "Boxes 1-7",  SRAM, BANK [2]

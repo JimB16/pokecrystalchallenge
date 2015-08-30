@@ -22904,9 +22904,9 @@ Function17024d: ; 17024d
 	ld [ScriptVar], a
 	and a
 	jr nz, .asm_1702a9
-	ld a, $1
+	ld a, BANK(sbe46)
 	call GetSRAMBank
-	ld a, [$be46]
+	ld a, [sbe46]
 	ld [wcf64], a
 	call CloseSRAM
 	ld hl, StringBuffer3
@@ -22971,19 +22971,20 @@ Function17024dOwn: ; 17024d
 ; 1702b7
 
 
+; Initialise the BattleTower-Trainer and his Pkmn
 Function1702b7: ; 1702b7
 	call Function1704a2
 	ld de, $c643
 	ld c, $b
 	callba Function17d073
 	jr nc, .asm_1702db
-	ld a, [$c608 + 11]
+	ld a, [BT_OTTempCopy + 11]
 	ld [wd265], a
 	call GetPokemonName
 	ld l, e
 	ld h, d
 	ld de, $c643
-	ld bc, $000b
+	ld bc, PKMN_NAME_LENGTH
 	call CopyBytes
 
 .asm_1702db
@@ -22997,7 +22998,7 @@ Function1702b7: ; 1702b7
 	ld l, e
 	ld h, d
 	ld de, $c67e
-	ld bc, $000b
+	ld bc, PKMN_NAME_LENGTH
 	call CopyBytes
 
 .asm_1702fc
@@ -23011,7 +23012,7 @@ Function1702b7: ; 1702b7
 	ld l, e
 	ld h, d
 	ld de, $c686 + 51
-	ld bc, $000b
+	ld bc, PKMN_NAME_LENGTH
 	call CopyBytes
 
 .asm_17031d
@@ -23020,7 +23021,7 @@ Function1702b7: ; 1702b7
 	ld [$c688], a
 	ld [$c68a + 57], a
 	call Function170c98
-	ld de, $c608
+	ld de, BT_OTTempCopy
 	ld c, $a
 	callba Function17d073
 	jr nc, .asm_17033d
@@ -23028,7 +23029,7 @@ Function1702b7: ; 1702b7
 	jr .asm_170340
 
 .asm_17033d
-	ld hl, $c608
+	ld hl, BT_OTTempCopy ; 0xc608
 
 .asm_170340
 	ld de, wd26b
@@ -23037,7 +23038,7 @@ Function1702b7: ; 1702b7
 
 	ld a, $50
 	ld [de], a
-	ld hl, $c608 + 10
+	ld hl, BT_OTTempCopy + $a
 	ld a, [hli]
 	ld [OtherTrainerClass], a
 	ld a, $ea
@@ -23046,10 +23047,12 @@ Function1702b7: ; 1702b7
 	ld [wcd21], a
 	ld de, OTPartyMon1Species
 	ld bc, OTPartyCount
+
 	ld a, $6 ; Number of Pkmn the BattleTower-Trainer has
 	ld [bc], a
 	inc bc
-	
+
+	; Copy Pkmn into Memory from the address in hl
 .asm_170367
 ;	push hl ;;
 	push af
@@ -23271,17 +23274,17 @@ Function1704a2: ; 1704a2
 	push af
 	ld a, $3
 	ld [rSVBK], a
-	ld hl, LYOverrides
+	ld hl, $d100 ; this is NOT LYOverrides
 	ld de, $c608
 	ld bc, $00e0+$40*3 ;;
 	call CopyBytes
 	pop af
 	ld [rSVBK], a
-	ld a, $1
+	ld a, BANK(s1_be45)
 	call GetSRAMBank
 	ld a, $2
-	ld [$be45], a
-	ld hl, $be46
+	ld [s1_be45], a
+	ld hl, sbe46
 	inc [hl]
 	call CloseSRAM
 Function1704c9:
@@ -23635,22 +23638,23 @@ Jumptable_170696: ; 170696 (5c:4696)
 	dw Function170737 ; 0x1f
 
 
+; Reset the save memory for BattleTower-Trainers (Counter and all 7 TrainerBytes)
 Function1706d6: ; 1706d6 (5c:46d6)
-	ld a, $1
+	ld a, BANK(sBTTrainers)
 	call GetSRAMBank
 	ld a, $ff
-	ld hl, $be48
+	ld hl, sBTTrainers
 	ld bc, $7
 	call ByteFill
 	xor a
-	ld [$be46], a
+	ld [sbe46], a
 	call CloseSRAM
 	ret
 
 Function1706ee: ; 1706ee (5c:46ee)
-	ld a, $1
+	ld a, BANK(sbe50)
 	call GetSRAMBank
-	ld a, [$be50]
+	ld a, [sbe50]
 	call CloseSRAM
 	ld [ScriptVar], a
 	ld hl, NumItems
@@ -23676,18 +23680,18 @@ Function1706ee: ; 1706ee (5c:46ee)
 	ret
 
 Function17071b: ; 17071b (5c:471b)
-	ld a, $1
+	ld a, BANK(s1_be45)
 	call GetSRAMBank
 	ld a, $3
-	ld [$be45], a
+	ld [s1_be45], a
 	call CloseSRAM
 	ret
 
 Function170729: ; 170729 (5c:4729)
-	ld a, $1
+	ld a, BANK(s1_be45)
 	call GetSRAMBank
 	ld a, $4
-	ld [$be45], a
+	ld [s1_be45], a
 	call CloseSRAM
 	ret
 
@@ -23707,10 +23711,10 @@ Function17073e: ; 17073e (5c:473e)
 	cp $1e
 	jr z, Function17073e
 	push af
-	ld a, $1
+	ld a, BANK(sbe50)
 	call GetSRAMBank
 	pop af
-	ld [$be50], a
+	ld [sbe50], a
 	call CloseSRAM
 	ret
 
@@ -23719,17 +23723,17 @@ Function17075f: ; 17075f (5c:475f)
 	ld a, [ScriptVar]
 	and a
 	ret z
-	ld a, $1
+	ld a, BANK(sbe4f)
 	call GetSRAMBank
-	ld a, [$be4f]
+	ld a, [sbe4f]
 	and $2
 	ld [ScriptVar], a
 	call CloseSRAM
 	ret
 
 Function170778: ; 170778 (5c:4778)
-	ld hl, $be45
-	ld a, $1
+	ld hl, s1_be45
+	ld a, BANK(s1_be45)
 	call GetSRAMBank
 	ld a, [hl]
 	ld [ScriptVar], a
@@ -23737,11 +23741,11 @@ Function170778: ; 170778 (5c:4778)
 	ret
 
 Function170788: ; 170788 (5c:4788)
-	ld a, $1
+	ld a, BANK(sbe4f)
 	call GetSRAMBank
-	ld a, [$be4f]
+	ld a, [sbe4f]
 	or $2
-	ld [$be4f], a
+	ld [sbe4f], a
 	call CloseSRAM
 	ret
 
@@ -23752,10 +23756,10 @@ Function170799: ; 170799 (5c:4799)
 Function17079d: ; 17079d (5c:479d)
 	ld c, $0
 asm_17079f: ; 17079f (5c:479f)
-	ld a, $1
+	ld a, BANK(s1_be45)
 	call GetSRAMBank
 	ld a, c
-	ld [$be45], a
+	ld [s1_be45], a
 	call CloseSRAM
 	ret
 
@@ -23864,27 +23868,27 @@ Function17081d: ; 17081d (5c:481d)
 	ret
 
 Function170868: ; 170868 (5c:4868)
-	ld a, $1
+	ld a, BANK(sbe47)
 	call GetSRAMBank
 	ld a, [rSVBK] ; $ff00+$70
 	push af
 	ld a, $3
 	ld [rSVBK], a ; $ff00+$70
 	ld a, [wd000 + $800]
-	ld [$be47], a
+	ld [sbe47], a
 	pop af
 	ld [rSVBK], a ; $ff00+$70
 	call CloseSRAM
 	ret
 
 Function170881: ; 170881 (5c:4881)
-	ld a, $1
+	ld a, BANK(sbe47)
 	call GetSRAMBank
 	ld a, [rSVBK] ; $ff00+$70
 	push af
 	ld a, $3
 	ld [rSVBK], a ; $ff00+$70
-	ld a, [$be47]
+	ld a, [sbe47]
 	ld [wd000 + $800], a
 	pop af
 	ld [rSVBK], a ; $ff00+$70
@@ -23916,9 +23920,9 @@ Function1708b1: ; 1708b1 (5c:48b1)
 	ret
 
 Function1708b9: ; 1708b9 (5c:48b9)
-	ld a, $1
+	ld a, BANK(s1_be3c)
 	call GetSRAMBank
-	ld a, [$be3c]
+	ld a, [s1_be3c]
 	ld [ScriptVar], a
 	call CloseSRAM
 	ret
@@ -24222,20 +24226,20 @@ Function170abe: ; 170abe (5c:4abe)
 	ld a, [ScriptVar]
 	and a
 	ret z
-	ld a, $1
+	ld a, BANK(sbe4f)
 	call GetSRAMBank
-	ld a, [$be4f]
+	ld a, [sbe4f]
 	and $1
 	ld [ScriptVar], a
 	call CloseSRAM
 	ret
 
 Function170ad7: ; 170ad7 (5c:4ad7)
-	ld a, $1
+	ld a, BANK(sbe4f)
 	call GetSRAMBank
-	ld a, [$be4f]
+	ld a, [sbe4f]
 	or $1
-	ld [$be4f], a
+	ld [sbe4f], a
 	call CloseSRAM
 	ret
 
