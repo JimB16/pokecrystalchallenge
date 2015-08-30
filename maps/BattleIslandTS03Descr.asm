@@ -86,6 +86,13 @@ MapBattleIslandSignpost4Script:
 	givepoke2 MAROWAK, 100, THICK_CLUB, EARTHQUAKE, ROCK_SLIDE, HIDDEN_POWER, SWORDS_DANCE, BUG
 	givepoke2 STARMIE, 100, LEFTOVERS, SURF, RAPID_SPIN, RECOVER, PSYCHIC_M, NORMAL
 	givepoke2 ZAPDOS, 100, LEFTOVERS, THUNDERBOLT, HIDDEN_POWER, REST, SLEEP_TALK, ICE
+
+	givepoke2 FORRETRESS, 100, LEFTOVERS, EXPLOSION, RAPID_SPIN, REFLECT, SPIKES, NORMAL
+	givepoke2 GENGAR, 100, LEFTOVERS, EXPLOSION, ICE_PUNCH, MEAN_LOOK, THUNDERBOLT, NORMAL
+	givepoke2 SNORLAX, 100, LEFTOVERS, CURSE, DOUBLE_EDGE, LOVELY_KISS, REST, NORMAL
+	givepoke2 TYRANITAR, 100, LEFTOVERS, CURSE, PURSUIT, ROAR, ROCK_SLIDE, NORMAL
+	givepoke2 VAPOREON, 100, LEFTOVERS, GROWTH, REST, SLEEP_TALK, SURF, NORMAL
+	givepoke2 EXEGGUTOR, 100, LEFTOVERS, EXPLOSION, HIDDEN_POWER, PSYCHIC_M, STUN_SPORE, FIRE
 	jumptext BattleIslandOwnText2
 
 BattleIslandOwnText3:
@@ -116,7 +123,7 @@ Script_BattleRoom__: ; 0x9f421
 ;	storetext 1 ; Random Text of opponent trainer
 ;	keeptextopen
 ;	loadmovesprites
-	special Function170215 ; calls predef startbattle
+	special Function170215OwnSpecial ; calls predef startbattle
 	special FadeBlackBGMap
 	reloadmap
 ;	if_not_equal $0, UnknownScript_0x9f4c2

@@ -22782,31 +22782,37 @@ Function17020c: ; 17020c
 ; 170215
 
 Function170215: ; 170215
-;	push hl
-;	push af
-;	push bc
-;	ld a, BANK(sbe46)
-;	call GetSRAMBank
-;	ld a, 17
-;	ld c, a
-;	ld hl, sbe46
-;looperase:
-;	xor a
-;	ld [hli], a
-;	dec c
-;	ld a, c
-;	and a
-;	jr nz, looperase
-;	call CloseSRAM
-;	pop bc
-;	pop af
-;	pop hl
+	push hl
+	push af
+	push bc
+	ld a, BANK(sbe46)
+	call GetSRAMBank
+	ld a, 17
+	ld c, a
+	ld hl, sbe46
+looperase:
+	xor a
+	ld [hli], a
+	dec c
+	ld a, c
+	and a
+	jr nz, looperase
+	call CloseSRAM
+	pop bc
+	pop af
+	pop hl
 
 	xor a
 	ld [wcf63], a
 	call Function17022c
 	ret
 ; 17021d
+
+Function170215OwnSpecial: ; 170215
+	xor a
+	ld [wcf63], a
+	call Function17022cOwn
+	ret
 
 Function17021d: ; 17021d
 	ret
@@ -22831,6 +22837,15 @@ Function17022c: ; 17022c
 	ret
 ; 17023a
 
+Function17022cOwn: ; 17022c
+.asm_17022c_
+	call Function17023aOwn
+	call DelayFrame
+	ld a, [wcf63]
+	cp $1
+	jr nz, .asm_17022c_
+	ret
+
 Function17023a: ; 17023a
 	ld a, [wcf63]
 	ld e, a
@@ -22845,10 +22860,27 @@ endr
 	jp [hl]
 ; 170249
 
+Function17023aOwn: ; 17023a
+	ld a, [wcf63]
+	ld e, a
+	ld d, 0
+	ld hl, Jumptable_170249Own
+rept 2
+	add hl, de
+endr
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp [hl]
+
 Jumptable_170249: ; 170249
 	dw Function17024d
 	dw Function1704c9
 ; 17024d
+
+Jumptable_170249Own: ; 170249
+	dw Function17024dOwn
+	dw Function1704c9
 
 Function17024d: ; 17024d
 	ld a, [Options]
@@ -22893,6 +22925,51 @@ Function17024d: ; 17024d
 	ld [wcf63], a
 	ret
 ; 1702b7
+
+Function17024dOwn: ; 17024d
+	ld a, [Options]
+	push af
+	ld hl, Options
+	set 6, [hl]
+	ld a, [wcfc0]
+	push af
+	or $1
+	ld [wcfc0], a
+	xor a
+	ld [InLinkBattle], a
+	callba Mobile_HealParty
+	callba HealParty
+	call Function1702b7
+	call Function170bf7
+	predef StartBattle
+;	callba LoadPokemonData
+	callba HealParty
+	ld a, [wd0ee]
+	ld [ScriptVar], a
+	and a
+	jr nz, .asm_1702a9_
+	ld a, $1
+	call GetSRAMBank
+	ld a, [$be46]
+	ld [wcf64], a
+	call CloseSRAM
+	ld hl, StringBuffer3
+	ld a, [wcf64]
+	add $f7
+	ld [hli], a
+	ld a, $50
+	ld [hl], a
+
+.asm_1702a9_
+	pop af
+	ld [wcfc0], a
+	pop af
+	ld [Options], a
+	ld a, $1
+	ld [wcf63], a
+	ret
+; 1702b7
+
 
 Function1702b7: ; 1702b7
 	call Function1704a2

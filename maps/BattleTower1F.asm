@@ -832,7 +832,7 @@ Script_BattleRoom_: ; 0x9f421
 	storetext 1
 	keeptextopen
 	loadmovesprites
-	special Function170215 ; calls predef startbattle
+	special Function170215OwnSpecial ; calls predef startbattle
 	special FadeBlackBGMap
 	reloadmap
 ;	if_not_equal $0, UnknownScript_0x9f4c2

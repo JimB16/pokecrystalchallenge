@@ -8319,14 +8319,6 @@ Functiond906_: ; d906
 	ld l, e
 
 NewPkmnWithoutMoves_:
-;	xor a
-;	rept NUM_MOVES + -1
-;	ld [hli], a
-;	endr
-;	ld [hl], a
-;	ld [Buffer1], a
-;	predef FillMoves
-
 	ld a, [CurMove0]
 	ld [hli], a
 	ld a, [CurMove1]
@@ -8336,7 +8328,6 @@ NewPkmnWithoutMoves_:
 	ld a, [CurMove3]
 	ld [hl], a
 
-WildPkmnWithMoves_:
 	pop de
 rept 4
 	inc de
@@ -8362,9 +8353,8 @@ endr
 	ld [de], a
 	inc de
 ; Set Experience Values of Pkmn
-;	xor a
 	ld a, $ff
-	ld b, $a
+	ld b, 2*5
 .asm_d97a_
 	ld [de], a
 	inc de
@@ -9267,6 +9257,157 @@ Functionde6e: ; de6e
 	ret
 ; df42
 
+;;;;;;;;;;;;
+
+SentPkmnIntoBoxOwn: ; de6e
+	ld a, BANK(sBoxCount)
+	call GetSRAMBank
+	ld de, sBoxCount
+	ld a, [de]
+	cp MONS_PER_BOX
+	jp nc, Functiondf42
+	inc a
+	ld [de], a
+	ld a, [CurPartySpecies]
+	ld [CurSpecies], a
+	ld c, a
+.asm_de85_
+	inc de
+	ld a, [de]
+	ld b, a
+	ld a, c
+	ld c, b
+	ld [de], a
+	inc a
+	jr nz, .asm_de85_
+	call GetBaseData
+	call ShiftBoxMon
+	ld hl, PlayerName
+	ld de, sBoxMonOT
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ld a, [CurPartySpecies]
+	ld [wd265], a
+	call GetPokemonName
+	ld de, sBoxMonNicknames
+	ld hl, StringBuffer1
+	ld bc, PKMN_NAME_LENGTH
+	call CopyBytes
+	ld hl, EnemyMon
+	ld de, sBoxMon1
+	ld bc, 1 + 1 + NUM_MOVES ; species + item + moves
+	call CopyBytes
+	
+	ld a, [CurItem]
+	ld hl, sBoxMon1Item
+	ld [hl], a
+	
+	ld hl, CurMove0
+	ld de, sBoxMon1Moves
+	ld bc, NUM_MOVES
+	call CopyBytes
+	
+	ld hl, PlayerID
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	inc de
+	push de
+	ld a, [CurPartyLevel]
+	ld d, a
+	callab Function50e47
+	pop de
+	ld a, [hMultiplicand]
+	ld [de], a
+	inc de
+	ld a, [$ffb5]
+	ld [de], a
+	inc de
+	ld a, [$ffb6]
+	ld [de], a
+	inc de
+
+; Load Experience Values	
+;	xor a
+	ld a, $ff
+	ld b, 2*5
+.asm_dee5_
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .asm_dee5_
+
+	; load DVs
+	ld a, [HPType]
+	ld c, a
+	ld b, 0
+	ld hl, HiddenPowerDVs
+	add hl, bc
+	ld a, [hl]
+
+	ld [de], a
+	inc de
+	ld a, $ff
+	ld [de], a
+	inc de
+	
+	ld hl, EnemyMonPP
+	ld b, NUM_MOVES ; DVs and PP ; EnemyMonHappiness - EnemyMonDVs
+.asm_deef_
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .asm_deef_
+
+	ld a, BASE_HAPPINESS
+	ld [de], a
+	inc de
+	xor a
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld [de], a
+	inc de
+	ld a, [CurPartyLevel]
+	ld [de], a
+
+	ld a, [CurPartySpecies]
+	dec a
+	call SetSeenAndCaughtMon
+
+	ld a, [CurPartySpecies]
+	cp UNOWN
+	jr nz, .asm_df20_
+	ld hl, sBoxMon1DVs
+	predef GetUnownLetter
+	callab Functionfba18
+.asm_df20_
+
+	ld hl, sBoxMon1Moves
+	ld de, TempMonMoves
+	ld bc, NUM_MOVES
+	call CopyBytes
+
+	ld hl, sBoxMon1PP
+	ld de, TempMonPP
+	ld bc, NUM_MOVES
+	call CopyBytes
+
+	ld b, 0
+	call Functiondcb6
+
+	call CloseSRAM
+	scf
+	ret
+; df42
+
+;;;;;;;;;;;;;;
+
+
 Functiondf42: ; df42
 	call CloseSRAM
 	and a
@@ -10025,7 +10166,7 @@ GivePoke2:: ; e277
 	ld a, [CurPartySpecies]
 	ld [TempEnemyMonSpecies], a
 	callab LoadEnemyMon
-	call Functionde6e
+	call SentPkmnIntoBoxOwn
 	jp nc, Functione3d4_
 	ld a, $2
 	ld [MonType], a
@@ -34628,6 +34769,7 @@ TrainerClassNames:: ; 2c1ef
 	db "OFFICER@"
 	db "ROCKET@"
 	db "MYSTICALMAN@"
+	db "PROGRAMMER@"
 
 
 

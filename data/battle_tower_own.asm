@@ -122,7 +122,7 @@ Battle_Tower_Own:
 
 	db STARMIE
 	db LEFTOVERS
-	db SURF, RAPID_SPIN, RECOVER, PSYCHIC
+	db SURF, RAPID_SPIN, RECOVER, PSYCHIC_M
 	dw 0 ; OT ID
 	dt 1250000 ; Exp
 	; Stat exp
@@ -176,3 +176,7 @@ Battle_Tower_Own:
 	bigdw 278 ; SDef
 	db "RANTA-N@@@@"
 
+
+
+BattleTowerTrainers_:
+	db "HANSON@@@@", FISHER
