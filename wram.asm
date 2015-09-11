@@ -810,6 +810,7 @@ wc716:: ds 1
 wc717:: ds 1
 wc718:: ds 1
 wc719:: ds 1
+LastPlayerMon:: ; c71a
 wc71a:: ds 1
 LastPlayerMove:: ; c71b
 	ds 1
@@ -819,13 +820,13 @@ LastEnemyMove:: ; c71c
 wc71d:: ds 1
 wc71e:: ds 1
 wc71f:: ds 1
-wc720:: ds 4
+wc720:: ds 4 ; copy from/to EnemyMonBaseStats, length=7
 wc724:: ds 3
 wc727:: ds 2
 wc729:: ds 2
 wc72b:: ds 1
 wc72c:: ds 1
-wc72d:: ds 1
+wc72d:: ds 1 ; if 0 then PrintButItFailed
 wc72e:: ds 1
 wc72f:: ds 1
 wc730:: ds 1
@@ -887,17 +888,17 @@ wc7e8:: ds 24
 
 
 RSSET 0 ; Offsets for wBT_OTTempCopy:: @ $c608
-wBT_OTTempCopy_0			RB   $A			; $c608
-wBT_OTTempCopy_TrainerClass	RB   $1			; $c608 + $a = $c612
-wBT_OTTempCopy_Pkmn1		RB   $30		; $c608 + $b = $c613
-wBT_OTTempCopy_Pkmn1Name	RB   $A			; $c608 + $3b = $c643
-wBT_OTTempCopy_45			RB   $1			; $c608 + $45 = $c64d
-wBT_OTTempCopy_Pkmn2		RB   $30		; $c608 + $46 = $c64e
-wBT_OTTempCopy_Pkmn2Name	RB   $A			; $c608 + $76 = $c67e
-wBT_OTTempCopy_80			RB   $1			; $c608 + $80 = $c688
-wBT_OTTempCopy_Pkmn3		RB   $30		; $c608 + $81 = $c689
-wBT_OTTempCopy_Pkmn3Name	RB   $A			; $c608 + $b1 = $c6b9
-wBT_OTTempCopy_BB			RB   $1			; $c608 + $bb = $c6c3
+wBT_OTTempCopy_0            RB   $A			; $c608
+wBT_OTTempCopy_TrainerClass RB   $1			; $c608 + $a = $c612
+wBT_OTTempCopy_Pkmn1        RB   $30		; $c608 + $b = $c613
+wBT_OTTempCopy_Pkmn1Name    RB   $A			; $c608 + $3b = $c643
+wBT_OTTempCopy_45           RB   $1			; $c608 + $45 = $c64d
+wBT_OTTempCopy_Pkmn2        RB   $30		; $c608 + $46 = $c64e
+wBT_OTTempCopy_Pkmn2Name    RB   $A			; $c608 + $76 = $c67e
+wBT_OTTempCopy_80           RB   $1			; $c608 + $80 = $c688
+wBT_OTTempCopy_Pkmn3        RB   $30		; $c608 + $81 = $c689
+wBT_OTTempCopy_Pkmn3Name    RB   $A			; $c608 + $b1 = $c6b9
+wBT_OTTempCopy_BB           RB   $1			; $c608 + $bb = $c6c3
 
 GLOBAL wBT_OTTempCopy_TrainerClass, wBT_OTTempCopy_Pkmn1, wBT_OTTempCopy_Pkmn1Name, wBT_OTTempCopy_45, wBT_OTTempCopy_Pkmn2, wBT_OTTempCopy_Pkmn2Name, wBT_OTTempCopy_80, wBT_OTTempCopy_Pkmn3, wBT_OTTempCopy_Pkmn3Name, wBT_OTTempCopy_BB
 
@@ -1191,6 +1192,7 @@ CurSpecies:: ; cf60
 
 wcf61:: ds 2
 wcf63:: ds 1
+wNrOfBeatenBattleTowerTrainers::
 wcf64:: ds 1
 IF !DEF(CRYSTAL11)
 wPokedexStatus::
@@ -1280,10 +1282,12 @@ GameTimerPause:: ; cfbc
 
 wcfbe:: ds 2
 
-InBattleTowerBattle::
+InBattleTowerBattle:: ; cfc0
 ; 0 not in BattleTower-Battle
-; 1 BattleTowe-Battle
-wcfc0:: ds 2
+; 1 BattleTower-Battle
+	ds 1
+
+	ds 1
 
 FXAnimID::
 FXAnimIDLo:: ; cfc2
@@ -1766,17 +1770,17 @@ OtherTrainerClass:: ; d22f
 
 BattleType:: ; d230
 ; $00 normal
-; $01
-; $02
-; $03 dude
+; $01 can lose
+; $02 debug
+; $03 dude/tutorial
 ; $04 fishing
 ; $05 roaming
-; $06
+; $06 contest
 ; $07 shiny
 ; $08 headbutt/rock smash
-; $09
+; $09 trap
 ; $0a force Item1
-; $0b
+; $0b celebi
 ; $0c suicune
 	ds 1
 
@@ -2429,7 +2433,9 @@ wdc7c:: ds 33
 wdc9d:: ds 2
 wdc9f:: ds 1
 wdca0:: ds 1
-wdca1:: ds 3
+RepelStepsLeft:: ; If a Repel is in use, it contains the nr of steps it's still active
+	ds 1
+wdca2:: ds 2
 wdca4:: ds 1
 
 wPlayerDataEnd::
@@ -2594,7 +2600,9 @@ wPokemonDataEnd::
 
 SECTION "Pic Animations", WRAMX, BANK [2]
 
-w2_d000:: ds $168
+w2_d000::
+; 20x18 grid of 8x8 tiles
+	ds SCREEN_WIDTH * SCREEN_HEIGHT ; $168 = 360
 
 w2_d168:: ds 1
 w2_d169:: ds 1
@@ -2633,12 +2641,15 @@ w2_d188:: ds 1
 
 SECTION "WRAM 3", WRAMX, BANK [3]
 
+w3_d000:: ; d000
 	ds $100
 
 BT_OTrainer::
-w3_d100:: ; BattleTower OpponentTrainer-Data (lengt = 0xe0)
-	ds $6
-	ds $5
+w3_d100:: ; BattleTower OpponentTrainer-Data (length = 0xe0 = $a + $1 + 3*$3b + $24)
+BT_OTrainer_Name::
+	ds $A
+BT_OTrainer_TrainerClass::
+	ds $1
 BT_OTPkmn1:: ; w3_d10b
 	ds $1
 BT_OTPkmn1Item::
@@ -2653,17 +2664,13 @@ BT_OTPkmn3Item::
 	ds $3b-1
 	
 	ds $24
-BT_OTrainerEnd::
-
+BT_OTrainerEnd:: ; we_d1e0
+	
 	ds $20
 	
-TrainerNr::
-ds 1
-TeamNr::
-ds 1
-	ds $600-2
-	
+	ds $600
 
+wBTChoiceOfLvlGroup::
 w3_d800:: ds 1
 
 
@@ -2835,6 +2842,7 @@ s1_be45:: ds 1
 
 ; data of the BattleTower must be in SRAM because you can save and leave between battles
 sBattleTower:: ; be46
+sNrOfBeatenBattleTowerTrainers::
 sbe46:: ds 1
 sbe47:: ds 1
 ; The 7 trainers of the BattleTower are saved here, so nobody appears more than once

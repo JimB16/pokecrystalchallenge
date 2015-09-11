@@ -143,7 +143,7 @@ SpecialsPointers:: ; c029
 	add_special Function170215OwnSpecial
 	add_special Function1704e1
 	add_special Function17021d
-	add_special Function_LoadOpponentTrainerAndPokemons170b44
+	add_special Function_LoadOpponentTrainerAndPokemonsWithOTSprite
 	add_special Function_LoadOpponentTrainerAndPokemons170b44_Own
 	add_special Function11ba38
 	add_special SpecialCheckForBattleTowerRules

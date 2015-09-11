@@ -5789,7 +5789,7 @@ Function116294: ; 116294
 	ld de, Unkn1Pals + 8 * 7
 	ld bc, $0008
 	call CopyBytes
-	call Function32f9
+	call SetPalettes
 	pop af
 	ld [rSVBK], a
 	ld a, $30
@@ -5810,7 +5810,7 @@ Function1162cb: ; 1162cb
 	ld de, wd050
 	ld bc, $0030
 	call CopyBytes
-	call Function32f9
+	call SetPalettes
 	pop af
 	ld [rSVBK], a
 	ret
@@ -5917,7 +5917,7 @@ Function11636e: ; 11636e
 	call CopyBytes
 	pop af
 	ld [rSVBK], a
-	call Function32f9
+	call SetPalettes
 	ld a, [rSVBK]
 	push af
 	ld a, $1
@@ -5967,7 +5967,7 @@ Function1163c0: ; 1163c0
 	call CopyBytes
 	pop af
 	ld [rSVBK], a
-	call Function32f9
+	call SetPalettes
 	call DelayFrame
 	ld a, $90
 	ld [hWY], a
@@ -9728,12 +9728,12 @@ Function118903: ; 118903 (46:4903)
 	ld [wcd3c], a
 	call Function119ed8
 	jp Function119e2e
-; 11891c (46:491c)
+
 
 Function11891c: ; 11891c
 	call Function118b42
 	jp Function119e2e
-; 118922
+
 
 Function118922: ; 118922
 	ld a, [wcd38]
@@ -9770,13 +9770,13 @@ Function118936:
 	ld a, [StatusFlags]
 	bit 6, a
 	jr nz, .asm_11896b
-	ld hl, Strings_Ll0ToL40 ; Address to list of strings with the choosable levels
-	ld a, 5 ; 4 levels to choose from, including 'Cancel'-option
+	ld hl, Strings_Ll0ToL40		; Address to list of strings with the choosable levels
+	ld a, 5						; 4 levels to choose from, including 'Cancel'-option
 	jr .asm_118970
 
 .asm_11896b
-	ld hl, Strings_L10ToL100 ; Address to list of strings with the choosable levels
-	ld a, 11 ; 10 levels to choose from, including 'Cancel'-option
+	ld hl, Strings_L10ToL100	; Address to list of strings with the choosable levels
+	ld a, 11					; 10 levels to choose from, including 'Cancel'-option
 
 .asm_118970
 	ld [wcd4a], a
@@ -9915,7 +9915,8 @@ Function118982:
 	ld a, $0
 	ld [wcd46], a
 	ret
-; 118a54
+
+
 
 Function118a54: ; 118a54
 	ld a, [wcd55]
@@ -14154,7 +14155,7 @@ Function11a9c0: ; 11a9c0
 Function11a9ce: ; 11a9ce
 	call WhiteBGMap
 	call Function2bae
-	call Function1d7d
+	call Call_ExitMenu
 	callba Function106462
 	callba Function106464
 	call Functiond90
@@ -14936,7 +14937,7 @@ Function11b082: ; 11b082
 	call Function11b099
 	call Function11b295
 	call Function11b275
-	call Function32f9
+	call SetPalettes
 	jp Function11ad8a
 ; 11b099
 
@@ -16531,7 +16532,7 @@ ENDC
 	sub $19
 
 .asm_11c021
-	ld hl, Unknown_11f332
+	ld hl, BTTrainerTexts
 	jr .asm_11c033
 
 .asm_11c026
@@ -16611,7 +16612,7 @@ ENDC
 	sub $19
 
 .asm_11c021
-	ld hl, Unknown_11f332
+	ld hl, BTTrainerTexts
 	jr .asm_11c033
 
 .asm_11c026
@@ -16958,7 +16959,7 @@ Function11c1ca: ; 11c1ca
 	call ClearSprites
 	call ClearScreen
 	call Function11d323
-	call Function32f9
+	call SetPalettes
 	call DisableLCD
 	ld hl, GFX_11d67e
 	ld de, VTiles2
@@ -20755,14 +20756,14 @@ Unknown_11f2f0:
 	db $01, $01, $00, $00, $00, $01
 
 
-Unknown_11f332:
-	dw Unknown_11f338
-	dw Unknown_11f36a
-	dw Unknown_11f39c
+BTTrainerTexts: ; 11f332
+	dw BTTrainerGreetings
+	dw BTTrainerPlayerLostTexts
+	dw BTTrainerPlayerWonTexts
 
-Unknown_11f338: ; 11f338
-	dw UnknownText_0x11f42e
-	dw UnknownText_0x11f43d
+BTTrainerGreetings: ; 11f338
+	dw BattleTowerTextJump_0x11f42e
+	dw BattleTowerTextJump_0x11f43d
 	dw UnknownText_0x11f44c
 	dw UnknownText_0x11f45b
 	dw UnknownText_0x11f46a
@@ -20787,8 +20788,8 @@ Unknown_11f338: ; 11f338
 	dw UnknownText_0x11f587
 	dw UnknownText_0x11f596
 
-Unknown_11f36a: ; 11f36a
-	dw UnknownText_0x11f433
+BTTrainerPlayerLostTexts: ; 11f36a
+	dw BattleTowerTextJump_0x11f433
 	dw UnknownText_0x11f442
 	dw UnknownText_0x11f451
 	dw UnknownText_0x11f460
@@ -20814,7 +20815,7 @@ Unknown_11f36a: ; 11f36a
 	dw UnknownText_0x11f58c
 	dw UnknownText_0x11f59b
 
-Unknown_11f39c: ; 11f39c
+BTTrainerPlayerWonTexts: ; 11f39c
 	dw UnknownText_0x11f438
 	dw UnknownText_0x11f447
 	dw UnknownText_0x11f456
@@ -20899,20 +20900,20 @@ Unknown_11f410: ; 11f410
 	dw UnknownText_0x11f681
 
 
-UnknownText_0x11f42e: ; 0x11f42e
-	text_jump UnknownText_0x1ec000
+BattleTowerTextJump_0x11f42e: ; 0x11f42e
+	text_jump BattleTowerText_0x1ec000
 	db "@"
 
-UnknownText_0x11f433: ; 0x11f433
-	text_jump UnknownText_0x1ec03b
+BattleTowerTextJump_0x11f433: ; 0x11f433
+	text_jump BattleTowerText_0x1ec03b
 	db "@"
 
 UnknownText_0x11f438: ; 0x11f438
 	text_jump UnknownText_0x1ec060
 	db "@"
 
-UnknownText_0x11f43d: ; 0x11f43d
-	text_jump UnknownText_0x1ec080
+BattleTowerTextJump_0x11f43d: ; 0x11f43d
+	text_jump BattleTowerText_0x1ec080
 	db "@"
 
 UnknownText_0x11f442: ; 0x11f442
@@ -21742,7 +21743,7 @@ endr
 	cp $8
 	jr nz, .asm_16c969
 	callba Function96a4
-	call Function32f9
+	call SetPalettes
 	ld a, [rSVBK]
 	push af
 	ld a, $1
@@ -21845,7 +21846,7 @@ endr
 	cp $8
 	jr nz, .asm_16ca28
 	callba Function96a4
-	call Function32f9
+	call SetPalettes
 	ld a, [rSVBK]
 	push af
 	ld a, $1
@@ -22268,10 +22269,10 @@ Function16d43b: ; 16d43b
 	callba Function16d42e
 	ld b, $8
 	call GetSGBLayout
-	call Function32f9
+	call SetPalettes
 	call WaitBGMap
 	call Functiona36
-	call Function1d7d
+	call Call_ExitMenu
 	ret
 ; 16d465
 
@@ -22413,7 +22414,7 @@ Function16d6ce: ; 16d6ce
 	call Function1d6e
 	call Function16d6e1
 	callba Function87d
-	call Function1d7d
+	call Call_ExitMenu
 	call Function3200
 	ret
 ; 16d6e1
@@ -22916,7 +22917,7 @@ Function17021e: ; 17021e
 
 Function17022c: ; 17022c
 .asm_17022c
-	call Function17023a
+	call Jumpto_BattleTowerBattleFunction
 	call DelayFrame
 	ld a, [wcf63]
 	cp $1
@@ -22933,11 +22934,11 @@ Function17022cOwn: ; 17022c
 	jr nz, .asm_17022c_
 	ret
 
-Function17023a: ; 17023a
+Jumpto_BattleTowerBattleFunction: ; 17023a
 	ld a, [wcf63]
 	ld e, a
 	ld d, 0
-	ld hl, Jumptable_170249
+	ld hl, Jumptable_BattleTowerBattleFunctions
 rept 2
 	add hl, de
 endr
@@ -22960,24 +22961,24 @@ endr
 	ld l, a
 	jp [hl]
 
-Jumptable_170249: ; 170249
-	dw Function17024d
-	dw Function1704c9
+Jumptable_BattleTowerBattleFunctions: ; 170249
+	dw RunBattleTowerBattle
+	dw SkipBattleTowerBattle
 ; 17024d
 
-Jumptable_170249Own: ; 170249
+Jumptable_170249Own:
 	dw Function17024dOwn
-	dw Function1704c9
+	dw SkipBattleTowerBattle
 
-Function17024d: ; 17024d
+RunBattleTowerBattle: ; 17024d
 	ld a, [Options]
 	push af
 	ld hl, Options
 	set 6, [hl]
-	ld a, [wcfc0]
+	ld a, [InBattleTowerBattle]
 	push af
 	or $1
-	ld [wcfc0], a
+	ld [InBattleTowerBattle], a
 	xor a
 	ld [InLinkBattle], a
 	callba Mobile_HealParty
@@ -22991,13 +22992,13 @@ Function17024d: ; 17024d
 	ld [ScriptVar], a
 	and a
 	jr nz, .asm_1702a9
-	ld a, BANK(sbe46)
+	ld a, BANK(sNrOfBeatenBattleTowerTrainers)
 	call GetSRAMBank
-	ld a, [sbe46]
-	ld [wcf64], a
+	ld a, [sNrOfBeatenBattleTowerTrainers]
+	ld [wNrOfBeatenBattleTowerTrainers], a ; wcf64
 	call CloseSRAM
 	ld hl, StringBuffer3
-	ld a, [wcf64]
+	ld a, [wNrOfBeatenBattleTowerTrainers] ; wcf64
 	add $f7
 	ld [hli], a
 	ld a, $50
@@ -23005,23 +23006,22 @@ Function17024d: ; 17024d
 
 .asm_1702a9
 	pop af
-	ld [wcfc0], a
+	ld [InBattleTowerBattle], a
 	pop af
 	ld [Options], a
 	ld a, $1
 	ld [wcf63], a
 	ret
-; 1702b7
 
 Function17024dOwn: ; 17024d
 	ld a, [Options]
 	push af
 	ld hl, Options
 	set 6, [hl]
-	ld a, [wcfc0]
+	ld a, [InBattleTowerBattle]
 	push af
 	or $1
-	ld [wcfc0], a
+	ld [InBattleTowerBattle], a
 	xor a
 	ld [InLinkBattle], a
 	callba Mobile_HealParty
@@ -23049,7 +23049,7 @@ Function17024dOwn: ; 17024d
 
 .asm_1702a9_
 	pop af
-	ld [wcfc0], a
+	ld [InBattleTowerBattle], a
 	pop af
 	ld [Options], a
 	ld a, $1
@@ -23058,55 +23058,56 @@ Function17024dOwn: ; 17024d
 ; 1702b7
 
 
-; Initialise the BattleTower-Trainer and his Pkmn
 Function1702b7: ; 1702b7
-	call Function1704a2
-	ld de, $c643
-	ld c, $b
+; Initialise the BattleTower-Trainer and his Pkmn
+	call CopyBTTrainer_FromBT_OTrainer_TowBT_OTTempCopy
+	ld de, wBT_OTTempCopy + wBT_OTTempCopy_Pkmn1Name ; $c643
+	ld c, PKMN_NAME_LENGTH
 	callba Function17d073
 	jr nc, .asm_1702db
-	ld a, [wBT_OTTempCopy + 11]
+
+	ld a, [wBT_OTTempCopy + wBT_OTTempCopy_Pkmn1]
 	ld [wd265], a
 	call GetPokemonName
 	ld l, e
 	ld h, d
-	ld de, $c643
+	ld de, wBT_OTTempCopy + wBT_OTTempCopy_Pkmn1Name ; $c643
 	ld bc, PKMN_NAME_LENGTH
 	call CopyBytes
 
 .asm_1702db
-	ld de, $c67e
-	ld c, $b
+	ld de, wBT_OTTempCopy + wBT_OTTempCopy_Pkmn2Name ; $c67e
+	ld c, PKMN_NAME_LENGTH
 	callba Function17d073
 	jr nc, .asm_1702fc
-	ld a, [$c64e]
+	ld a, [wBT_OTTempCopy + wBT_OTTempCopy_Pkmn2] ; [$c64e]
 	ld [wd265], a
 	call GetPokemonName
 	ld l, e
 	ld h, d
-	ld de, $c67e
+	ld de, wBT_OTTempCopy + wBT_OTTempCopy_Pkmn2Name ; $c67e
 	ld bc, PKMN_NAME_LENGTH
 	call CopyBytes
 
 .asm_1702fc
-	ld de, $c686 + 51
-	ld c, $b
+	ld de, wBT_OTTempCopy + wBT_OTTempCopy_Pkmn3Name ; $c686 + 51 = $c6b9
+	ld c, PKMN_NAME_LENGTH
 	callba Function17d073
 	jr nc, .asm_17031d
-	ld a, [$c689]
+	ld a, [wBT_OTTempCopy + wBT_OTTempCopy_Pkmn3] ; [$c689]
 	ld [wd265], a
 	call GetPokemonName
 	ld l, e
 	ld h, d
-	ld de, $c686 + 51
+	ld de, wBT_OTTempCopy + wBT_OTTempCopy_Pkmn3Name ; $c686 + 51 = $c6b9
 	ld bc, PKMN_NAME_LENGTH
 	call CopyBytes
 
 .asm_17031d
 	ld a, $50
-	ld [$c64d], a
-	ld [$c688], a
-	ld [$c68a + 57], a
+	ld [wBT_OTTempCopy + wBT_OTTempCopy_45], a ; $c64d
+	ld [wBT_OTTempCopy + wBT_OTTempCopy_80], a ; $c688
+	ld [wBT_OTTempCopy + wBT_OTTempCopy_BB], a ; $c68a + 57 = $c6c3
 	call Function170c98
 	ld de, wBT_OTTempCopy
 	ld c, $a
@@ -23125,21 +23126,20 @@ Function1702b7: ; 1702b7
 
 	ld a, $50
 	ld [de], a
-	ld hl, wBT_OTTempCopy + $a
+	ld hl, wBT_OTTempCopy + wBT_OTTempCopy_TrainerClass
 	ld a, [hli]
 	ld [OtherTrainerClass], a
 	ld a, $ea
 	ld [BGMapBuffer], a
 	ld a, $d3
 	ld [wcd21], a
-	ld de, OTPartyMon1Species
-	ld bc, OTPartyCount
-
-	ld a, $6 ; Number of Pkmn the BattleTower-Trainer has
-	ld [bc], a
-	inc bc
 
 	; Copy Pkmn into Memory from the address in hl
+	ld de, OTPartyMon1Species
+	ld bc, OTPartyCount
+	ld a, BATTLETOWER_NROFPKMNS		; Number of Pkmn the BattleTower-Trainer has
+	ld [bc], a
+	inc bc
 .asm_170367
 ;	push hl ;;
 	push af
@@ -23147,7 +23147,7 @@ Function1702b7: ; 1702b7
 	ld [bc], a
 	inc bc
 	push bc
-	ld bc, $0030
+	ld bc, BATTLETOWER_PKMNSTRUCTLENGTH
 	call CopyBytes
 	push de
 	ld a, [BGMapBuffer]
@@ -23174,7 +23174,7 @@ Function1702b7: ; 1702b7
 
 ; Initialise the BattleTower-Trainer and his Pkmn
 Function1702b7Own: ; 1702b7
-	call Function1704a2
+	call CopyBTTrainer_FromBT_OTrainer_TowBT_OTTempCopy
 	ld de, $c643
 	ld c, $b
 	callba Function17d073
@@ -23474,16 +23474,18 @@ Unknown_17047e:
 	db $0f, $05, $14, $07
 	db $05, $05, $11, $0c
 	db $0c, $06, $06, $04
-; 1704a2
 
-Function1704a2: ; 1704a2
+
+CopyBTTrainer_FromBT_OTrainer_TowBT_OTTempCopy: ; 1704a2
+; copy the BattleTower-Trainer data that lies at 'BT_OTrainer' to 'wBT_OTTempCopy'
 	ld a, [rSVBK]
 	push af
 	ld a, $3
 	ld [rSVBK], a
-	ld hl, $d100 ; this is NOT LYOverrides
-	ld de, $c608
-	ld bc, $00e0+$40*3 ;;
+	ld hl, BT_OTrainer ; $d100
+	ld de, wBT_OTTempCopy ; $c608
+	ld bc, BT_OTrainerEnd - BT_OTrainer ; $e0 = $a + $1 + 3*$3b + $24
+                                        ;	  = $a + $1 + BATTLETOWER_NROFPKMNS * (BATTLETOWER_PKMNSTRUCTLENGTH + PKMN_NAME_LENGTH) + BATTLETOWER_TRAINERDATALENGTH
 	call CopyBytes
 	pop af
 	ld [rSVBK], a
@@ -23491,10 +23493,10 @@ Function1704a2: ; 1704a2
 	call GetSRAMBank
 	ld a, $2
 	ld [s1_be45], a
-	ld hl, sbe46
+	ld hl, sNrOfBeatenBattleTowerTrainers
 	inc [hl]
 	call CloseSRAM
-Function1704c9:
+SkipBattleTowerBattle: ; 1704c9
 	ret
 ; 1704ca
 
@@ -23567,14 +23569,17 @@ Jumptable_17051f: ; 17051f
 Function170525: ; 170525
 	ld a, $5
 	call GetSRAMBank
+
 	ld hl, $a89c
 	ld de, StringBuffer3
 	ld bc, $0016
 	call CopyBytes
+
 	ld hl, $a8b2
 	ld de, $c608
 	ld bc, $0096
 	call CopyBytes
+
 	call CloseSRAM
 	hlcoord 1, 1
 	ld de, StringBuffer3
@@ -23592,9 +23597,11 @@ Function170525: ; 170525
 	call Function1705f0
 	jr Function1705b2
 
+
 Function170571:
-	call Function32f9
+	call SetPalettes
 	call Function1705b2
+
 
 Function170577:
 	ld hl, hJoyPressed
@@ -23837,7 +23844,7 @@ Jumptable_170696: ; 170696 (5c:4696)
 	dw Function17081d ; 0x17
 	dw Function170ae8 ; 0x18
 	dw Function170b16 ; 0x19
-	dw Function1706d6 ; 0x1a
+	dw ResetBattleTowerTrainersSRAM ; 0x1a
 	dw Function1706ee ; 0x1b
 	dw Function17071b ; 0x1c
 	dw Function170729 ; 0x1d
@@ -23846,21 +23853,26 @@ Jumptable_170696: ; 170696 (5c:4696)
 
 
 ; Reset the save memory for BattleTower-Trainers (Counter and all 7 TrainerBytes)
-Function1706d6: ; 1706d6 (5c:46d6)
+ResetBattleTowerTrainersSRAM: ; 1706d6 (5c:46d6)
 	ld a, BANK(sBTTrainers)
 	call GetSRAMBank
+
 	ld a, $ff
 	ld hl, sBTTrainers
-	ld bc, $7
+	ld bc, BATTLETOWER_NROFTRAINERS
 	call ByteFill
+
 	xor a
-	ld [sbe46], a
+	ld [sNrOfBeatenBattleTowerTrainers], a
+
 	call CloseSRAM
+
 	ret
 
 Function1706ee: ; 1706ee (5c:46ee)
 	ld a, BANK(sbe50)
 	call GetSRAMBank
+
 	ld a, [sbe50]
 	call CloseSRAM
 	ld [ScriptVar], a
@@ -24490,7 +24502,7 @@ Function170b16: ; 170b16 (5c:4b16)
 	ld [ScriptVar], a
 	ret
 
-Function_LoadOpponentTrainerAndPokemons170b44: ; 0x170b44
+Function_LoadOpponentTrainerAndPokemonsWithOTSprite: ; 0x170b44
 	callba Function_LoadOpponentTrainerAndPokemons
 	ld a, [rSVBK]
 	push af
@@ -24507,6 +24519,9 @@ Function_LoadOpponentTrainerAndPokemons170b44: ; 0x170b44
 	add hl, bc
 	ld a, [hl]
 	ld [wcd49], a
+
+; Load sprite of the opponent trainer
+; because s/he is chosen randomly and appears out of nowhere
 	ld a, [ScriptVar]
 	dec a
 	sla a
@@ -25220,7 +25235,7 @@ Function171ccd: ; 171ccd (5c:5ccd)
 	ld [hli], a
 	ld a, $7f
 	ld [hl], a
-	call Function32f9
+	call SetPalettes
 	pop af
 	ld [rSVBK], a ; $ff00+$70
 	ret
@@ -25382,7 +25397,7 @@ Function172eb9:
 	ld de, BGPals
 	ld bc, $40
 	call CopyBytes
-	call Function32f9
+	call SetPalettes
 	pop af
 	ld [rSVBK], a ; $ff00+$70
 	ret

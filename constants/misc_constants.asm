@@ -109,7 +109,6 @@ const_value = 1
 	const MOM_DOLL
 
 
-
 RSSET 0 ; Offsets for BattleTowerTrainersOwn:
 BattleTowerTrainersOwn_0		RB   11
 BattleTowerTrainersOwn_NrPkmns	RB   1
@@ -120,3 +119,8 @@ GLOBAL BattleTowerTrainersOwn_0, BattleTowerTrainersOwn_NrPkmns, BattleTowerTrai
 BattleTowerTrainersOwn_Length EQU 11+1+2*6
 
 GLOBAL BattleTowerTrainersOwn_Length
+
+BATTLETOWER_PKMNSTRUCTLENGTH EQU $30
+BATTLETOWER_NROFPKMNS EQU 3
+BATTLETOWER_TRAINERDATALENGTH EQU $24
+BATTLETOWER_NROFTRAINERS EQU 7

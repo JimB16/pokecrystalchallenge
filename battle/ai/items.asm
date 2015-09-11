@@ -9,7 +9,7 @@ AI_SwitchOrTryItem: ; 38000
 	and a
 	ret nz
 
-	callba Function3e8d1
+	callba CheckSubstatus_RechargeChargedRampageBideRollout
 	ret nz
 
 	ld a, [PlayerSubStatus5]
@@ -21,9 +21,10 @@ AI_SwitchOrTryItem: ; 38000
 	jr nz, DontSwitch
 
 	ld hl, TrainerClassAttributes + 5
-	ld a, [wcfc0]
+	ld a, [InBattleTowerBattle] ; Load always the first TrainerClass for BattleTower-Trainers
 	and a
 	jr nz, .ok
+
 	ld a, [TrainerClass]
 	dec a
 	ld bc, 7
@@ -157,7 +158,8 @@ CheckSubstatusCantRun: ; 380ff
 
 
 AI_TryItem: ; 38105
-	ld a, [wcfc0]
+	; items are not allowed in the BattleTower
+	ld a, [InBattleTowerBattle]
 	and a
 	ret nz
 
@@ -786,17 +788,17 @@ Function38511: ; 38511
 ; 3851e
 
 Function3851e: ; 3851e
-	ld [hMultiplier], a
+	ld [hDivisor], a
 	ld hl, EnemyMonMaxHP
 	ld a, [hli]
-	ld [hProduct], a
+	ld [hDividend + 0], a
 	ld a, [hl]
-	ld [hMultiplicand], a
+	ld [hDividend + 1], a
 	ld b, $2
 	call Divide
-	ld a, [$ffb6]
+	ld a, [hQuotient + 2]
 	ld c, a
-	ld a, [$ffb5]
+	ld a, [hQuotient + 1]
 	ld b, a
 	ld hl, EnemyMonHP + 1
 	ld a, [hld]
