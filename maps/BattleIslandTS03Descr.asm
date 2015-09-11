@@ -89,10 +89,15 @@ MapBattleIslandSignpost4Script:
 
 	givepoke2 FORRETRESS, 100, LEFTOVERS, EXPLOSION, RAPID_SPIN, REFLECT, SPIKES, NORMAL
 	givepoke2 GENGAR, 100, LEFTOVERS, EXPLOSION, ICE_PUNCH, MEAN_LOOK, THUNDERBOLT, NORMAL
-	givepoke2 SNORLAX, 100, LEFTOVERS, CURSE, DOUBLE_EDGE, LOVELY_KISS, REST, NORMAL
+	givepoke2 SNORLAX, 100, LEFTOVERS, DOUBLE_EDGE, CURSE, REST, LOVELY_KISS, NORMAL
+	givepoke2 SNORLAX, 100, LEFTOVERS, BELLY_DRUM, BODY_SLAM, EARTHQUAKE, REST, NORMAL
 	givepoke2 TYRANITAR, 100, LEFTOVERS, CURSE, PURSUIT, ROAR, ROCK_SLIDE, NORMAL
 	givepoke2 VAPOREON, 100, LEFTOVERS, GROWTH, REST, SLEEP_TALK, SURF, NORMAL
 	givepoke2 EXEGGUTOR, 100, LEFTOVERS, EXPLOSION, HIDDEN_POWER, PSYCHIC_M, STUN_SPORE, FIRE
+	
+	givepoke2 PIKACHU, 100, LIGHT_BALL, THUNDERBOLT, SURF, SING, HIDDEN_POWER, FIRE
+	givepoke2 MEWTWO, 100, LEFTOVERS, CURSE, RECOVER, SUBMISSION, THUNDERBOLT, NORMAL
+	givepoke2 MEW, 100, LEFTOVERS, SWORDS_DANCE, SUBMISSION, SOFTBOILED, SHADOW_BALL, NORMAL
 	jumptext BattleIslandOwnText2
 
 BattleIslandOwnText3:
@@ -113,7 +118,11 @@ Script_BattleRoom__: ; 0x9f421
 ;	applymovement PLAYER, MovementData_0x9e58c
 ; beat all 7 opponents in a row
 ;Script_BattleRoomLoop: ; 0x9f425
-	writebyte $2
+
+;	loadvar TrainerNr, 0
+;	loadvar TeamNr, 1
+
+	writebyte 1
 	special Function_LoadOpponentTrainerAndPokemons170b44_Own
 ;	appear $2
 ;	warpsound
@@ -123,7 +132,13 @@ Script_BattleRoom__: ; 0x9f421
 ;	storetext 1 ; Random Text of opponent trainer
 ;	keeptextopen
 ;	loadmovesprites
+;	storetext 1 ; Random Text of opponent trainer
+;	winlosstext Text_Win, Text_Loss
+
 	special Function170215OwnSpecial ; calls predef startbattle
+
+;	ld c, a
+;	callba StoreText
 	special FadeBlackBGMap
 	reloadmap
 ;	if_not_equal $0, UnknownScript_0x9f4c2
@@ -155,6 +170,15 @@ Script_BattleRoom__: ; 0x9f421
 ;	jump Script_BattleRoomLoop
 	end
 
+Text_Win:
+	text "You've won."
+	line "Incredible!"
+	done
+
+Text_Loss:
+	text "I've won."
+	line "Yippie!"
+	done
 
 JumpText_BattleIslandTS03Hotel:
 	jumptext Text_BattleIslandTS03Hotel

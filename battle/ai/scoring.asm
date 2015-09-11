@@ -6,6 +6,7 @@ AI_Basic: ; 38591
 	ld hl, Buffer1 - 1
 	ld de, EnemyMonMoves
 	ld b, EnemyMonMovesEnd - EnemyMonMoves + 1
+
 .checkmove
 	dec b
 	ret z
@@ -20,6 +21,11 @@ AI_Basic: ; 38591
 
 	ld a, [wEnemyMoveStruct + MOVE_EFFECT]
 	ld c, a
+
+	ld a, b
+	cp 4
+	jr z, .checkmove
+	jr .discourage
 
 ; Dismiss moves with special effects if they are
 ; useless or not a good choice right now.
@@ -151,6 +157,7 @@ endr
 
 
 AI_Types: ; 38635
+	ret
 ; Dismiss any move that the player is immune to.
 ; Encourage super-effective moves.
 ; Discourage not very effective moves unless
@@ -3635,3 +3642,5 @@ AI_50_50: ; 39527
 	cp $80 ; 1/2
 	ret
 ; 3952d
+
+INCLUDE "battle/ai/scoring_own.asm"

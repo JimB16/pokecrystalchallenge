@@ -347,6 +347,23 @@ BattleText_0x80bde: ; 0x80bde
 	prompt
 ; 0x80bf3
 
+
+BattleText_Debug0: ; 0x80bde
+	text "AIMove Scoring:"
+	line "@"
+	text_from_ram StringBuffer1
+	text ""
+	prompt
+
+
+BattleText_Debug1: ; 0x80bde
+	text "AI HealthStatus:"
+	line "@"
+	text_from_ram StringBuffer1
+	text ""
+	prompt
+
+
 BattleText_0x80bf3: ; 0x80bf3
 	text "Items can't be"
 	line "used here."

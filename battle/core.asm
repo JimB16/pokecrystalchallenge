@@ -160,6 +160,7 @@ Function3c0e5: ; 3c0e5
 	ret
 ; 3c12f
 
+INCLUDE "battle/core_own.asm"
 
 Function3c12f: ; 3c12f
 .loop

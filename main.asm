@@ -9253,14 +9253,17 @@ SentPkmnIntoBox: ; de6e
 	callab Functionfba18
 
 .asm_df20
+
 	ld hl, sBoxMon1Moves
 	ld de, TempMonMoves
 	ld bc, NUM_MOVES
 	call CopyBytes
+
 	ld hl, sBoxMon1PP
 	ld de, TempMonPP
 	ld bc, NUM_MOVES
 	call CopyBytes
+
 	ld b, 0
 	call Functiondcb6
 
@@ -37491,7 +37494,7 @@ endr
 	inc b
 	ld a, b
 	cp EnemyMonMovesEnd - EnemyMonMoves + 1
-	jr z, .ApplyLayers
+	jr z, .CheckMovePPEnd
 	inc hl
 	ld a, [de]
 	inc de
@@ -37499,7 +37502,17 @@ endr
 	jr nz, .CheckMovePP
 	ld [hl], 80
 	jr .CheckMovePP
+.CheckMovePPEnd
 
+
+;;;;;;;;;;;;;;;;;;
+	ld a, [InBattleTowerBattle]
+	and a
+	jr z, .ApplyLayers
+	callba AI_BATTLETOWER
+	jr .DecrementScoresPrev
+;;;;;;;;;;;;;;;;;;
+	
 
 ; Apply AI scoring layers depending on the trainer class.
 .ApplyLayers
@@ -37525,7 +37538,7 @@ endr
 
 	ld a, c
 	cp 16 ; up to 16 scoring layers
-	jr z, .DecrementScores
+	jr z, .DecrementScoresPrev
 
 	push bc
 	ld d, BANK(TrainerClassAttributes)
@@ -37554,6 +37567,13 @@ endr
 	call FarCall_hl
 
 	jr .CheckLayer
+
+
+.DecrementScoresPrev
+	callba OutputTCAIAttr
+	callba OutputAIMoveScores
+	callba OutputAIHealthStatus
+
 
 ; Decrement the scores of all moves one by one until one reaches 0.
 .DecrementScores

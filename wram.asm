@@ -313,6 +313,7 @@ InLinkBattle:: ; c2dc
 ScriptVar:: ; c2dd
 	ds 1
 
+Own_PkmnNrOfTeam::
 wc2de:: ds 1
 wc2df:: ds 3
 wc2e2:: ds 1
@@ -443,6 +444,7 @@ SECTION "Battle", WRAM0
 
 wMisc::
 wBattle::
+wBT_OTTempCopy:: ; used to copy the data of the BattleTower-Trainer and the 3 Pkmn
 
 wc608::
 wEnemyMoveStruct::  ds MOVE_LENGTH ; c608
@@ -884,13 +886,20 @@ wMiscEnd::
 wc7e8:: ds 24
 
 
-RSSET $c608 ;$c000+(wc608-wc000) ; compute the address through doesn't seem to work
-BT_OTTempCopy    RW   1
-str_tData     RB   256
-str_bCount    RB   1
-str_SIZEOF    RB   0
+RSSET 0 ; Offsets for wBT_OTTempCopy:: @ $c608
+wBT_OTTempCopy_0			RB   $A			; $c608
+wBT_OTTempCopy_TrainerClass	RB   $1			; $c608 + $a = $c612
+wBT_OTTempCopy_Pkmn1		RB   $30		; $c608 + $b = $c613
+wBT_OTTempCopy_Pkmn1Name	RB   $A			; $c608 + $3b = $c643
+wBT_OTTempCopy_45			RB   $1			; $c608 + $45 = $c64d
+wBT_OTTempCopy_Pkmn2		RB   $30		; $c608 + $46 = $c64e
+wBT_OTTempCopy_Pkmn2Name	RB   $A			; $c608 + $76 = $c67e
+wBT_OTTempCopy_80			RB   $1			; $c608 + $80 = $c688
+wBT_OTTempCopy_Pkmn3		RB   $30		; $c608 + $81 = $c689
+wBT_OTTempCopy_Pkmn3Name	RB   $A			; $c608 + $b1 = $c6b9
+wBT_OTTempCopy_BB			RB   $1			; $c608 + $bb = $c6c3
 
-GLOBAL BT_OTTempCopy
+GLOBAL wBT_OTTempCopy_TrainerClass, wBT_OTTempCopy_Pkmn1, wBT_OTTempCopy_Pkmn1Name, wBT_OTTempCopy_45, wBT_OTTempCopy_Pkmn2, wBT_OTTempCopy_Pkmn2Name, wBT_OTTempCopy_80, wBT_OTTempCopy_Pkmn3, wBT_OTTempCopy_Pkmn3Name, wBT_OTTempCopy_BB
 
 
 
@@ -1270,6 +1279,10 @@ GameTimerPause:: ; cfbc
 	ds 1
 
 wcfbe:: ds 2
+
+InBattleTowerBattle::
+; 0 not in BattleTower-Battle
+; 1 BattleTowe-Battle
 wcfc0:: ds 2
 
 FXAnimID::
@@ -2642,7 +2655,14 @@ BT_OTPkmn3Item::
 	ds $24
 BT_OTrainerEnd::
 
-	ds $620
+	ds $20
+	
+TrainerNr::
+ds 1
+TeamNr::
+ds 1
+	ds $600-2
+	
 
 w3_d800:: ds 1
 

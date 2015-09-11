@@ -16504,6 +16504,8 @@ Unknown_11bb7d:
 SECTION "bank47", ROMX, BANK[$47]
 
 StoreText:: ; 11c000
+; paramter:
+; c contains byte from script (For BattleTower = 1)
 	ld a, [rSVBK]
 	push af
 	ld a, $3
@@ -16579,6 +16581,88 @@ endr
 	call PlaceWholeStringInBoxAtOnce
 	ret
 ; 11c05d
+
+StoreTextOwn:: ; 11c000
+; paramter:
+; c contains byte from script (for BattleTower = 1)
+	ld a, [rSVBK]
+	push af
+	ld a, $3
+	ld [rSVBK], a
+IF DEF(CRYSTAL11)
+	ld hl, wd10a
+ELSE
+	ld hl, wd105
+ENDC
+	ld a, [hl]
+	dec a
+	ld e, a
+	ld d, 0
+	ld hl, Unknown_11f2f0
+	add hl, de
+	ld a, [hl]
+	and a
+	jr nz, .asm_11c026
+;	ld a, [hRandomAdd]
+	ld a, 1		; load the second text for win and lose a battle
+	and $1f
+	cp $19
+	jr c, .asm_11c021
+	sub $19
+
+.asm_11c021
+	ld hl, Unknown_11f332
+	jr .asm_11c033
+
+.asm_11c026
+	ld a, [hRandomAdd]
+	and $f
+	cp $f
+	jr c, .asm_11c030
+	sub $f
+
+.asm_11c030
+	ld hl, Unknown_11f3ce
+
+.asm_11c033
+	ld b, 0
+	dec c
+	jr nz, .asm_11c03d
+	ld [wd000 + $200], a
+	jr .asm_11c040
+
+.asm_11c03d
+	ld a, [wd000 + $200]
+
+.asm_11c040
+	push af
+rept 2
+	add hl, bc
+endr
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld h, a
+	ld l, c
+	pop af
+	ld c, a
+	ld b, 0
+rept 2
+	add hl, bc
+endr
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld l, c
+	ld h, a
+	bccoord 1, 14
+	pop af
+	ld [rSVBK], a
+	call PlaceWholeStringInBoxAtOnce
+	ret
+; 11c05d
+
+
 
 Function11c05d: ; 11c05d
 	ld a, e
@@ -22809,6 +22893,9 @@ looperase:
 ; 17021d
 
 Function170215OwnSpecial: ; 170215
+	ld c, $1
+	callba StoreTextOwn ; load Win- and Loss-Text
+
 	xor a
 	ld [wcf63], a
 	call Function17022cOwn
@@ -22939,7 +23026,7 @@ Function17024dOwn: ; 17024d
 	ld [InLinkBattle], a
 	callba Mobile_HealParty
 	callba HealParty
-	call Function1702b7
+	call Function1702b7Own
 	call Function170bf7
 	predef StartBattle
 ;	callba LoadPokemonData
@@ -22978,7 +23065,7 @@ Function1702b7: ; 1702b7
 	ld c, $b
 	callba Function17d073
 	jr nc, .asm_1702db
-	ld a, [BT_OTTempCopy + 11]
+	ld a, [wBT_OTTempCopy + 11]
 	ld [wd265], a
 	call GetPokemonName
 	ld l, e
@@ -23021,7 +23108,7 @@ Function1702b7: ; 1702b7
 	ld [$c688], a
 	ld [$c68a + 57], a
 	call Function170c98
-	ld de, BT_OTTempCopy
+	ld de, wBT_OTTempCopy
 	ld c, $a
 	callba Function17d073
 	jr nc, .asm_17033d
@@ -23029,7 +23116,7 @@ Function1702b7: ; 1702b7
 	jr .asm_170340
 
 .asm_17033d
-	ld hl, BT_OTTempCopy ; 0xc608
+	ld hl, wBT_OTTempCopy ; 0xc608
 
 .asm_170340
 	ld de, wd26b
@@ -23038,7 +23125,7 @@ Function1702b7: ; 1702b7
 
 	ld a, $50
 	ld [de], a
-	ld hl, BT_OTTempCopy + $a
+	ld hl, wBT_OTTempCopy + $a
 	ld a, [hli]
 	ld [OtherTrainerClass], a
 	ld a, $ea
@@ -23084,6 +23171,126 @@ Function1702b7: ; 1702b7
 	ld [bc], a
 	ret
 ; 170394
+
+; Initialise the BattleTower-Trainer and his Pkmn
+Function1702b7Own: ; 1702b7
+	call Function1704a2
+	ld de, $c643
+	ld c, $b
+	callba Function17d073
+	jr nc, .asm_1702db
+	ld a, [wBT_OTTempCopy + 11]
+	ld [wd265], a
+	call GetPokemonName
+	ld l, e
+	ld h, d
+	ld de, $c643
+	ld bc, PKMN_NAME_LENGTH
+	call CopyBytes
+
+.asm_1702db
+	ld de, $c67e
+	ld c, $b
+	callba Function17d073
+	jr nc, .asm_1702fc
+	ld a, [$c64e]
+	ld [wd265], a
+	call GetPokemonName
+	ld l, e
+	ld h, d
+	ld de, $c67e
+	ld bc, PKMN_NAME_LENGTH
+	call CopyBytes
+
+.asm_1702fc
+	ld de, $c686 + 51
+	ld c, $b
+	callba Function17d073
+	jr nc, .asm_17031d
+	ld a, [$c689]
+	ld [wd265], a
+	call GetPokemonName
+	ld l, e
+	ld h, d
+	ld de, $c686 + 51
+	ld bc, PKMN_NAME_LENGTH
+	call CopyBytes
+
+.asm_17031d
+	ld a, $50
+	ld [$c64d], a
+	ld [$c688], a
+	ld [$c68a + 57], a
+	call Function170c98
+	ld de, wBT_OTTempCopy
+	ld c, $a
+	callba Function17d073
+	jr nc, .asm_17033d
+	ld hl, String_170426
+	jr .asm_170340
+
+.asm_17033d
+	ld hl, wBT_OTTempCopy ; 0xc608
+
+.asm_170340
+	ld de, wd26b
+	ld bc, $000a
+	call CopyBytes
+
+	ld a, $50
+	ld [de], a
+	ld hl, wBT_OTTempCopy + wBT_OTTempCopy_TrainerClass
+	ld a, [hli]
+	ld [OtherTrainerClass], a
+	ld a, $ea
+	ld [BGMapBuffer], a
+	ld a, $d3
+	ld [wcd21], a
+	ld de, OTPartyMon1Species
+	ld bc, OTPartyCount
+
+	push hl
+	ld hl, Own_PkmnNrOfTeam
+	ld a, [hl]
+	pop hl
+	
+	;ld a, $6 ; Number of Pkmn the BattleTower-Trainer has
+	ld [bc], a
+	inc bc
+
+	; Copy Pkmn into Memory from the address in hl
+.asm_170367
+;	push hl ;;
+	push af
+	ld a, [hl]
+	ld [bc], a
+	inc bc
+	push bc
+	ld bc, $0030
+	call CopyBytes
+	push de
+	ld a, [BGMapBuffer]
+	ld e, a
+	ld a, [wcd21]
+	ld d, a
+	ld bc, $000b
+	call CopyBytes
+	ld a, e
+	ld [BGMapBuffer], a
+	ld a, d
+	ld [wcd21], a
+	pop de
+	pop bc
+	pop af
+;	pop hl ;;
+	dec a
+	and a
+	jr nz, .asm_170367
+	ld a, $ff
+	ld [bc], a
+	ret
+; 170394
+
 
 Function170394: ; 170394
 	ld hl, $c608 + 11
@@ -24342,28 +24549,8 @@ Function_LoadOpponentTrainerAndPokemons170b44_Own: ; 0x170b44
 	add hl, bc
 	ld a, [hl]
 	ld [wcd49], a
-	ld a, [ScriptVar]
-	dec a
-	sla a
-	ld e, a
-	sla a
-	sla a
-	sla a
-	ld c, a
-	ld b, $0
-	ld d, $0
-	ld hl, MapObjects
-	add hl, bc
-	inc hl
-	ld a, [wcd49]
-	ld [hl], a
-	ld hl, UsedSprites
-	add hl, de
-	ld [hli], a
-	ld [$ffbd], a
-	ld a, [hl]
-	ld [$ffbe], a
-	callba Function143c8
+
+;	ld a, [ScriptVar]
 	ret
 ; 170b90
 

@@ -12,7 +12,6 @@ Function_LoadOpponentTrainerAndPokemons: ; 1f8000
 	
 	; Write $ff into the Item-Slots
 	ld a, $ff
-
 	ld [BT_OTPkmn1Item], a
 	ld [BT_OTPkmn2Item], a
 	ld [BT_OTPkmn3Item], a
@@ -91,10 +90,12 @@ Function_LoadOpponentTrainerAndPokemons_Own: ; 1f8000
 	ld hl, w3_d100
 	ld bc, $00e0
 	call ByteFill
+
+	; Write $ff into the Item-Slots
 	ld a, $ff
-	ld [w3_d100 + $0c], a
-	ld [w3_d100 + $47], a
-	ld [w3_d100 + $82], a
+	ld [BT_OTPkmn1Item], a
+	ld [BT_OTPkmn2Item], a
+	ld [BT_OTPkmn3Item], a
 
 	; de = address, were everything following gets copied to
 	ld de, w3_d100
@@ -105,7 +106,9 @@ Function_LoadOpponentTrainerAndPokemons_Own: ; 1f8000
 .asm_1f8022 ; loop to find a random trainer
 	call Random
 ;	ld a, [hRandomAdd]
-	ld a, 0
+;	ld a, 0
+;	ld hl, TeamNr
+	ld a, [ScriptVar]
 	add b
 	ld b, a ; b contains the nr of the trainer
 IF DEF(CRYSTAL11)
@@ -115,7 +118,7 @@ ELSE
 	and $1f
 	cp $15
 ENDC
-	jr nc, .asm_1f8022
+;	jr nc, .asm_1f8022
 	ld b, a
 	ld a, BANK(sbe46)
 	call GetSRAMBank
@@ -134,12 +137,19 @@ ENDC
 	ld a, b
 	ld b, 0
 	add hl, bc
+	
+	ld a, [ScriptVar]
+;	push hl
+;	ld hl, TeamNr
+;	ld a, [hl]
+;	pop hl
+	
 	ld [hl], a
 	call CloseSRAM
 
 	push af
-	ld hl, BattleTowerTrainers
-	ld bc, 11
+	ld hl, BattleTowerTrainersOwn
+	ld bc, BattleTowerTrainersOwn_Length
 	call AddNTimes
 	ld bc, 11
 	call CopyBytes
@@ -285,32 +295,57 @@ Function_LoadRandomBattleTowerPkmn: ; 1f8081
 ; 1f814e
 
 Function_LoadRandomBattleTowerPkmn_Own: ; 1f8081
-	ld c, 6
+	ld a, [ScriptVar]
+	ld hl, BattleTowerTrainersOwn
+	ld bc, BattleTowerTrainersOwn_Length
+	call AddNTimes
+
+	ld a, BattleTowerTrainersOwn_NrPkmns
+	add l
+	ld l, a
+	xor a
+	add h
+	ld h, a
+	ld a, [hli]
+	ld c, a
+;	ld c, 6
+
 	push hl
+	ld hl, Own_PkmnNrOfTeam
+	ld [hl], a
+	
 	ld a, $0
 	ld hl, InitPkmnLoop
 	ld [hl], a
 	pop hl
+
 .loop
+	push hl
 	push bc
-	ld a, $1 ;BANK(sBTPkmnOfTrainers)
+	ld a, $1 ; BANK(sBTPkmnOfTrainers)
 	call GetSRAMBank
 
-.asm_1f8089
-	; From Which LevelGroup are the Pkmn loaded
-	; a = 1..10
-;	ld a, 1;;
-;	ld hl, BattleTowerMons
-;	ld bc, BattleTowerMons2 - BattleTowerMons1
-;	call AddNTimes
-	ld hl, Battle_Tower_Own
-
-.asm_1f8099
 	ld a, [InitPkmnLoop]
+	sla a
+	ld c, l
+	ld b, h
+;	ld bc, hl
+	add c
+	ld c, a
+	xor a
+	adc b
+	ld b, a
+	ld h, b
+	ld l, c
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld h, a
+	ld l, c
 
 	;ld a, 0;;
-	ld bc, $3b
-	call AddNTimes
+;	ld bc, $3b
+;	call AddNTimes
 
 	ld a, [InitPkmnLoop]
 	inc a
@@ -338,6 +373,7 @@ Function_LoadRandomBattleTowerPkmn_Own: ; 1f8081
 	pop af
 	ld [wd265], a
 	pop bc
+	pop hl
 	dec c
 	jp nz, .loop
 
