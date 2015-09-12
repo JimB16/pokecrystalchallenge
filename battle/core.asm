@@ -3319,6 +3319,9 @@ Function3d4e1: ; 3d4e1
 	call Function3d7a0
 	call Function_BattleTextEnemySentOut
 	call Function_SetEnemyPkmnAndSendOutAnimation
+	
+	ld a, $a0
+	call PrintHP
 	pop af
 	ret c
 	xor a
@@ -3337,7 +3340,13 @@ Function3d517: ; 3d517
 	jr c, .asm_3d522
 	call Function3d599
 .asm_3d522
+	; 'b' contains the PartyNr of the Pkmn the AI will switch to
+	push bc
 	call Function3d6ca
+	pop bc
+
+	ld a, b
+	call PrintHP
 	ld a, 1
 	ld [wEnemyIsSwitching], a
 	call Function3d7a0
