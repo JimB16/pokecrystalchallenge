@@ -183,7 +183,7 @@ AI_Types: ; 38635
 	push de
 	ld a, 1
 	ld [hBattleTurn], a
-	callab Function347c8
+	callab HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 	pop de
 	pop bc
 	pop hl
@@ -438,7 +438,7 @@ AI_Smart_LeechHit: ; 387f7
 	push hl
 	ld a, 1
 	ld [hBattleTurn], a
-	callab Function347c8
+	callab HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 	pop hl
 
 ; 60% chance to discourage this move if not very effective.
@@ -519,7 +519,7 @@ AI_Smart_LockOn: ; 3881d
 
 	push hl
 	push bc
-	callba Function347c8
+	callba HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 	ld a, [wd265]
 	cp $a
 	pop bc
@@ -1391,7 +1391,7 @@ AI_Smart_Mimic: ; 38ba8
 
 	ld a, $1
 	ld [hBattleTurn], a
-	callab Function347c8
+	callab HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 
 	ld a, [wd265]
 	cp $a
@@ -1837,7 +1837,7 @@ AI_Smart_Conversion2: ; 38d98
 	xor a
 	ld [hBattleTurn], a
 
-	callab Function347c8
+	callab HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 
 	ld a, [wd265]
 	cp $a
@@ -2503,7 +2503,7 @@ AI_Smart_HiddenPower: ; 3909e
 	
 ; Calculate Hidden Power's type and base power based on enemy's DVs.
 	callab HiddenPowerDamage
-	callab Function347c8
+	callab HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 	pop hl
 
 ; Discourage Hidden Power if not very effective.
@@ -3505,7 +3505,7 @@ AI_Status: ; 39453
 	push de
 	ld a, 1
 	ld [hBattleTurn], a
-	callab Function347c8
+	callab HowEffectiveIsTheMovetypeAgainstTheEnemyPkmn
 	pop de
 	pop bc
 	pop hl
