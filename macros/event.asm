@@ -315,19 +315,6 @@ givepoke: macro
 	db 0, 0
 	endc
 	endm
-
-	enum givepoke2_command
-givepoke2: macro
-	db givepoke2_command
-	db \1 ; pokemon
-	db \2 ; level
-	db \3 ; item
-	db \4 ; move0
-	db \5 ; move1
-	db \6 ; move2
-	db \7 ; move3
-	db \8 ; hidden power type
-	endm
 	
 	enum giveegg_command
 giveegg: macro
@@ -1073,3 +1060,6 @@ wait: macro
 unknown0xa9: macro
 	db unknown0xa9_command
 	endm
+
+
+INCLUDE "macros/event_own.asm"

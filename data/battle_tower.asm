@@ -90,103 +90,6 @@ ENDC
 	ret
 
 
-Function_LoadOpponentTrainerAndPokemons_Own: ; 1f8000
-	ld a, [rSVBK]
-	push af
-	ld a, $3
-	ld [rSVBK], a
-	xor a
-	ld hl, w3_d100
-	ld bc, $00e0
-	call ByteFill
-
-	; Write $ff into the Item-Slots
-	ld a, $ff
-	ld [BT_OTPkmn1Item], a
-	ld [BT_OTPkmn2Item], a
-	ld [BT_OTPkmn3Item], a
-
-	; de = address, were everything following gets copied to
-	ld de, w3_d100
-
-;	ld a, [hRandomAdd]
-	ld a, 0
-	ld b, a
-.asm_1f8022 ; loop to find a random trainer
-	call Random
-;	ld a, [hRandomAdd]
-;	ld a, 0
-;	ld hl, TeamNr
-	ld a, [ScriptVar]
-	add b
-	ld b, a ; b contains the nr of the trainer
-IF DEF(CRYSTAL11)
-	and $7f
-	cp $46
-ELSE
-	and $1f
-	cp $15
-ENDC
-;	jr nc, .asm_1f8022
-	ld b, a
-	ld a, BANK(sbe46)
-	call GetSRAMBank
-	
-	ld c, $7
-	ld hl, sBTTrainers
-.asm_1f803a
-	ld a, [hli]
-	cp b
-;	jr z, .asm_1f8022
-	dec c
-;	jr nz, .asm_1f803a ; c <= 7  initialise all 7 trainers?
-	ld hl, sBTTrainers
-	ld a, [sbe46]
-	ld c, a
-	ld a, b
-	ld b, 0
-	add hl, bc
-	
-	ld a, [ScriptVar]
-;	push hl
-;	ld hl, TeamNr
-;	ld a, [hl]
-;	pop hl
-	
-	ld [hl], a
-	call CloseSRAM
-
-	push af
-	ld hl, BattleTowerTrainersOwn
-	ld bc, BattleTowerTrainersOwn_Length
-	call AddNTimes
-	ld bc, 11
-	call CopyBytes
-
-	call Function_LoadRandomBattleTowerPkmn_Own
-	pop af
-
-	; load last 0x24 of the trainer into wram
-	ld hl, BattleTowerTrainerData
-	ld bc, $0024
-	call AddNTimes
-	ld bc, $0024
-.asm_1f8070
-	ld a, BANK(BattleTowerTrainerData)
-	call GetFarByte
-	ld [de], a
-	inc hl
-	inc de
-	dec bc
-	ld a, b
-	or c
-	jr nz, .asm_1f8070
-	
-	pop af
-	ld [rSVBK], a
-	ret
-
-
 Function_LoadRandomBattleTowerPkmn: ; 1f8081
 	ld c, BATTLETOWER_NROFPKMNS
 .loop
@@ -304,92 +207,6 @@ Function_LoadRandomBattleTowerPkmn: ; 1f8081
 	call CloseSRAM
 	ret
 ; 1f814e
-
-Function_LoadRandomBattleTowerPkmn_Own: ; 1f8081
-	ld a, [ScriptVar]
-	ld hl, BattleTowerTrainersOwn
-	ld bc, BattleTowerTrainersOwn_Length
-	call AddNTimes
-
-	ld a, BattleTowerTrainersOwn_NrPkmns
-	add l
-	ld l, a
-	xor a
-	add h
-	ld h, a
-	ld a, [hli]
-	ld c, a
-;	ld c, 6
-
-	push hl
-	ld hl, Own_PkmnNrOfTeam
-	ld [hl], a
-	
-	ld a, $0
-	ld hl, InitPkmnLoop
-	ld [hl], a
-	pop hl
-
-.loop
-	push hl
-	push bc
-	ld a, $1 ; BANK(sBTPkmnOfTrainers)
-	call GetSRAMBank
-
-	ld a, [InitPkmnLoop]
-	sla a
-	ld c, l
-	ld b, h
-;	ld bc, hl
-	add c
-	ld c, a
-	xor a
-	adc b
-	ld b, a
-	ld h, b
-	ld l, c
-	ld a, [hli]
-	ld c, a
-	ld a, [hl]
-	ld h, a
-	ld l, c
-
-	;ld a, 0;;
-;	ld bc, $3b
-;	call AddNTimes
-
-	ld a, [InitPkmnLoop]
-	inc a
-	ld [InitPkmnLoop], a
-	
-	ld bc, $3b
-	call CopyBytes
-	ld a, [wd265]
-	push af
-	push de
-	ld hl, -$3b
-	add hl, de
-	ld a, [hl]
-	ld [wd265], a
-	ld bc, $0030
-	add hl, bc
-	push hl
-	call GetPokemonName
-	ld h, d
-	ld l, e
-	pop de
-	ld bc, PKMN_NAME_LENGTH
-	call CopyBytes
-	pop de
-	pop af
-	ld [wd265], a
-	pop bc
-	pop hl
-	dec c
-	jp nz, .loop
-
-	call CloseSRAM
-	ret
 
 
 BattleTowerTrainers: ; 1f814e
@@ -6174,5 +5991,6 @@ BattleTowerMons10:
 	bigdw 214 ; SAtk
 	bigdw 214 ; SDef
 	db "RANTA-N@@@@"
+
 
 INCLUDE "data/battle_tower_own.asm"

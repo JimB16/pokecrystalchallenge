@@ -345,22 +345,6 @@ BattleText_UsersStringBuffer1Activated: ; 0x80bde
 	prompt
 ; 0x80bf3
 
-BattleText_Debug0: ; 0x80bde
-	text "AIMove Scoring:"
-	line "@"
-	text_from_ram StringBuffer1
-	text ""
-	prompt
-
-
-BattleText_Debug1: ; 0x80bde
-	text "AI HealthStatus:"
-	line "@"
-	text_from_ram StringBuffer1
-	text ""
-	prompt
-
-
 BattleText_ItemsCantBeUsedHere: ; 0x80bf3
 	text "Items can't be"
 	line "used here."
@@ -1309,3 +1293,6 @@ BattleText_0x8188e: ; 0x8188e
 	line "left today!"
 	done
 ; 0x818ac
+
+
+INCLUDE "text/battle_own.asm"
