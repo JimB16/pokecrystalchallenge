@@ -2395,7 +2395,7 @@ Function17ded9: ; 17ded9
 	ld [MonType], a
 	push hl
 	push bc
-	predef Functiond88c
+	predef AddPkmnToParty
 	callba Function4db49
 	pop bc
 	pop hl
@@ -2501,7 +2501,7 @@ endr
 	ld e, l
 	push hl
 	ld b, $0
-	callba Functione167
+	callba CalcPkmnStats
 	ld a, [PartyCount]
 	dec a
 	ld hl, PartyMon1HP
