@@ -272,16 +272,16 @@ endr
 	dec a
 	jr nz, .asm_da3b_
 	ld hl, EnemyMonMaxHP
-	ld bc, $000c
+	ld bc, 2*6
 	call CopyBytes
 	pop hl
 	jr .asm_da45_
 
 .asm_da3b_
 	pop hl
-	ld bc, $000a
+	ld bc, 2*5
 	add hl, bc
-	ld b, $0
+	ld b, $1 ; changed to 1
 	call Functione167
 
 .asm_da45_

@@ -8910,7 +8910,6 @@ SentPkmnIntoBox: ; de6e
 	callab Functionfba18
 
 .asm_df20
-
 	ld hl, sBoxMon1Moves
 	ld de, TempMonMoves
 	ld bc, NUM_MOVES
