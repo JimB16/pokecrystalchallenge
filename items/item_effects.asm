@@ -3309,3 +3309,6 @@ Functionf969: ; f969
 	add hl, bc
 	ret
 ; f971
+
+
+INCLUDE "items/item_effects_own.asm"

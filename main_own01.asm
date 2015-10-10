@@ -1,5 +1,7 @@
 
 AddPkmnToParty2: ; Check if to copy wild Pkmn or generate new Pkmn
+    callba PpUp_
+
 	ld de, PartyCount
 	ld a, [MonType]
 	and $f
@@ -282,7 +284,7 @@ endr
 	ld bc, 2*5
 	add hl, bc
 	ld b, $1 ; changed to 1
-	call Functione167
+	call CalcPkmnStats
 
 .asm_da45_
 	ld a, [MonType]
