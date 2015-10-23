@@ -1,0 +1,10 @@
+SECTION "WRAM 4", WRAMX, BANK [4]
+
+w4_d000:: ; d000
+	ds $100
+
+
+SECTION "WRAM 7", WRAMX, BANK [7]
+
+w7_d000:: ; d000
+	ds $100
